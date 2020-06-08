@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block body %}
+<br>
+<br>
+<form method="POST">
+  <br>
+  <br>
+  <div class="row w-75 mx-auto">
+    <!-- <div class='col-2'>
+    </div> -->
+
+    <div class="col-8">
+      <div class="row w-100 mx-auto">
+        <label class="form-check-label mt-2" for="username"> Username: </label>
+        <input id="username" class="input-group w-50 rounded mx-auto my-2" type="text" name="username" required>
+      </div>
+      <br>
+      <div class="row w-100 mx-auto">
+        <label class="form-check-label" for="password"> Password: </label>
+        <input id="password" class="input-group w-50 rounded mx-auto my-2" type="password" name="password" required> <br>
+      </div>
+    </div>
+    <div class="col-4 mx-auto">
+      <br>
+      <br>
+      <button class="btn btn-outline-success w-50" type="Submit" value="submit">Login</button>
+    </div>
+  </div>
+</form>
+
+<br>
+<a class="btn btn-outline-primary w-25 mx-auto my-3" href="/create-account">Create An Account</a>
+
+
+{% endblock %}
