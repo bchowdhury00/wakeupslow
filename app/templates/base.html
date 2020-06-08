@@ -29,8 +29,8 @@
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-primary my-2 my-sm-0 mx-2" type="submit">Search</button>
-      <a class="btn btn-outline-success my-2 my-sm-0 text-success mx-2">Login</a>
-      <a class="btn btn-outline-danger my-2 my-sm-0 text-danger mx-2">Sign Up</a>
+      <a class="btn btn-outline-success my-2 my-sm-0 text-success mx-2" href="/login">Login</a>
+      <a class="btn btn-outline-danger my-2 my-sm-0 text-danger mx-2" href="/register">Sign Up</a>
     </form>
   </div>
 </nav>
@@ -55,6 +55,18 @@
       </li>
     </ul>
   </div>
+
+    {% if alert is defined %}
+        <div class="alert alert-danger" role="alert">
+            {{ alert }}
+        </div>
+    {% elif success is defined %}
+        <div class="alert alert-success" role="alert">
+            {{ success }}
+        </div>
+    {% endif %}
+
+
   <div class="card-body center-block h-100">
     <div class="card text-center w-75 h-100 mx-auto">
       {% block body %}
