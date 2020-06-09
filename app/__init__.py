@@ -1,11 +1,11 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os
 import sqlite3
-
+from data.dbfunc import *
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
-DB_FILE = "app/data/database.db"
+DB_FILE = "data/database.db"
 
 
 @app.route('/')
@@ -22,20 +22,11 @@ def login():
 
 @app.route('/checkLogin')
 def checkLogin():
-    db = sqlite3.connect(DB_FILE)
-    c = db.cursor()
-    print(request.args)
     eUser = request.args['username']
     ePass = request.args['password']
-
-    arr = c.execute("SELECT * FROM users WHERE username='{}';".format(eUser)).fetchall()
-    print(arr)
-    if len(arr) == 0:
+    if (not authUser(eUser,ePass)):
         return render_template('login.html', alert="Username or Password incorrect")
-    elif arr[0][2] != ePass:
-        return render_template('login.html', alert="Username or Password incorrect")
-
-    session['username'] = eUser
+    session['Username'] = eUser
     return render_template('base.html', success="Logged in")
 
 @app.route('/logOut')
@@ -49,20 +40,13 @@ def register():
 
 @app.route('/createAccount')
 def createAccount():
-    db = sqlite3.connect(DB_FILE)
-    c = db.cursor()
     print(request.args)
-    arr = c.execute("SELECT * FROM users WHERE username='{}'".format(request.args['username'])).fetchall()
-    if len(arr) > 0:
-        message = "Username already in use"
+    user = request.args['username']
+    pass0 = request.args['password']
+    pass1 = request.args['password-repeat']
+    message = newAccount(user,pass0,pass1)
+    if (message != "sucess"):
         return render_template('register.html', alert=message)
-    elif request.args['password'] != request.args['password-repeat']:
-        message = "Passwords do not match, please try again"
-        return render_template('register.html', alert=message)
-
-    c.execute("INSERT INTO users(id, username, password) "
-              "VALUES('{}','{}','{}');".format(getNextID(), request.args['username'], request.args['password']))
-    db.commit()
     return render_template('login.html', success="Account Created")
 
 
@@ -70,12 +54,6 @@ def createAccount():
 def createListing():
     return render_template('create.html')
 
-
-def getNextID():
-    db = sqlite3.connect(DB_FILE)
-    c = db.cursor()
-    arr = c.execute("SELECT id FROM users;").fetchall()
-    return len(arr)
 
 if __name__ == "__main__":
     app.debug = True
