@@ -65,6 +65,12 @@ def createAccount():
     db.commit()
     return render_template('login.html', success="Account Created")
 
+
+@app.route('/createListing')
+def createListing():
+    return render_template('create.html')
+
+
 def getNextID():
     db = sqlite3.connect(DB_FILE)
     c = db.cursor()
