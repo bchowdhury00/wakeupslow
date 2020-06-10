@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os
 import sqlite3
-from app.data.dbfunc import *
+from data.dbfunc import *
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
