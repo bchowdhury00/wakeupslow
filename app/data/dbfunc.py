@@ -32,8 +32,8 @@ def newAccount(user,password,password1):
         return 0
     elif password != password1:
         return 1
-    c.execute('INSERT INTO users(id, username, password, location) '
-              'VALUES({},\"{}\",\"{}\");'.format(getNextID("user"), user, password))
+    c.execute('INSERT INTO users(id, username, password, location, contactInfo) '
+              'VALUES({},\"{}\",\"{}\",\"{}\");'.format(getNextID("user"), user, password))
     db.commit()
     return "success"
 
