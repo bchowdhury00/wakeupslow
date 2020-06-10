@@ -49,6 +49,10 @@ def createAccount():
         return render_template('register.html', alert=message)
     return render_template('login.html', success="Account Created")
 
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+
 
 @app.route('/createListing')
 def createListing():
