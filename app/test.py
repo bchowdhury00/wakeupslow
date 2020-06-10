@@ -4,11 +4,13 @@ import sqlite3
 from data.dbfunc import *
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '/static/images'
+UPLOAD_FOLDER = './static/images/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'img'}
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 DB_FILE = "data/database.db"
 
@@ -17,31 +19,37 @@ DB_FILE = "data/database.db"
 def hello_world():
     return render_template('base.html')
 
+
 @app.route('/another')
 def another():
     return render_template('maptest.html')
+
 
 @app.route('/login')
 def login():
     return render_template('login.html')
 
+
 @app.route('/checkLogin')
 def checkLogin():
     eUser = request.args['username']
     ePass = request.args['password']
-    if (not authUser(eUser,ePass)):
+    if (not authUser(eUser, ePass)):
         return render_template('login.html', alert="Username or Password incorrect")
     session['Username'] = eUser
     return render_template('base.html', success="Logged in")
+
 
 @app.route('/logOut')
 def logOut():
     session.pop('username')
     return render_template('base.html', success='Logged Out')
 
+
 @app.route('/register')
 def register():
     return render_template('register.html')
+
 
 @app.route('/createAccount')
 def createAccount():
@@ -49,7 +57,7 @@ def createAccount():
     user = request.args['username']
     pass0 = request.args['password']
     pass1 = request.args['password-repeat']
-    message = newAccount(user,pass0,pass1)
+    message = newAccount(user, pass0, pass1)
     if (message != "sucess"):
         return render_template('register.html', alert=message)
     return render_template('login.html', success="Account Created")
@@ -63,6 +71,7 @@ def createListing():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @app.route('/uploadPicture', methods=['GET', 'POST'])
 def upload_file():
@@ -80,9 +89,10 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
+            return redirect(url_for('createListing',
                                     filename=filename))
-    return '''
+    return ''
+
 
 
 if __name__ == "__main__":
