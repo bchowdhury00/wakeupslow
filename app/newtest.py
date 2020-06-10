@@ -1,29 +1,27 @@
 import os
-from flask import Flask, request
-
-UPLOAD_FOLDER = 'upload'
+from flask import Flask, request, redirect, session, render_template, url_for, flash
+UPLOAD_FOLDER = os.getcwd() + "\\app\\static\\images"
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['IMAGE_UPLOADS'] = UPLOAD_FOLDER
+
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
-    if request.method == 'POST':
-        if 'file1' not in request.files:
-            return 'there is no file1 in form!'
-        file1 = request.files['file1']
-        path = os.path.join(app.config['UPLOAD_FOLDER'], file1.filename)
-        file1.save(path)
-        return path
+    print(os.getcwd())
+    return render_template("create.html")
 
-        return 'ok'
-    return '''
-    <h1>Upload new File</h1>
-    <form method="post" enctype="multipart/form-data">
-      <input type="file" name="file1">
-      <input type="submit">
-    </form>
-    '''
+
+@app.route("/addListing", methods=['GET', 'POST'])
+def addListing():
+        if request.method == "POST":
+            if request.files:
+                image = request.files["image"]
+                image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
+                print(image)
+                return redirect(request.url)
+
+        return ""
 
 if __name__ == '__main__':
     app.run()

@@ -9,7 +9,7 @@
 
 
 
-<form action="/addListing">
+<form action="/addListing" method="POST" enctype="multipart/form-data">
   <div class="row">
     <div class="col">
       <br>
@@ -37,8 +37,8 @@
       </div>
       <div class="input-group my-3 mx-3">
         <div class="custom-file">
-          <!--<input type="file" class="custom-file-input" accept="image/*" name="imagefile" id="file" onchange="loadFile(event)">-->
-          <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+          <input type="file" class="custom-file-input" accept="image/*" name="image" id="file" onchange="loadFile(event)">
+          <label id="inputLabel" class="custom-file-label" for="inputGroupFile01">Choose image</label>
         </div>
       </div>
 
@@ -64,6 +64,9 @@
         var image = document.getElementById('imagefile');
         image.src = URL.createObjectURL(event.target.files[0]);
         const file = event.target.files[0];
+        console.log(event.target.files[0]);
+        var label = document.getElementById("inputLabel");
+        label.innerHTML = event.target.files[0]['name'];
       };
 
 
@@ -81,7 +84,7 @@
   </script>
 
   <div class="row">
-    <button type="submit" class="btn btn-outline-primary w-25 mx-auto my-5 text-primary"> Create Listing </button>
+    <button type="submit" class="btn btn-outline-primary w-25 mx-auto my-5"> Create Listing </button>
   </div>
 
 </form>
