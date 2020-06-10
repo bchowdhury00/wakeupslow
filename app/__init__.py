@@ -57,7 +57,7 @@ def createListing():
 @app.route('/addListing')
 def addListing():
     print(request.args)
-    return 0
+    return "hello"
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@
 
 
 
-<form action="/addListing" method="POST">
+<form action="/addListing">
   <div class="row">
     <div class="col">
       <br>
@@ -37,7 +37,7 @@
       </div>
       <div class="input-group my-3 mx-3">
         <div class="custom-file">
-          <input type="file" class="custom-file-input" accept="image/*" name="imagefile" id="file" onchange="loadFile(event)">
+          <!--<input type="file" class="custom-file-input" accept="image/*" name="imagefile" id="file" onchange="loadFile(event)">-->
           <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
         </div>
       </div>
@@ -205,7 +205,7 @@
   <div class="border"></div>
 
   <div class="row">
-    <a type="submit" class="btn btn-outline-primary w-25 mx-auto my-5 text-primary"> Create Listing </a>
+    <button type="submit" class="btn btn-outline-primary w-25 mx-auto my-5 text-primary"> Create Listing </button>
   </div>
 
 </form>
