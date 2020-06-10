@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os
 import sqlite3
-from data.dbfunc import *
+from app.data.dbfunc import *
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
@@ -53,6 +53,11 @@ def createAccount():
 @app.route('/createListing')
 def createListing():
     return render_template('create.html')
+
+@app.route('/addListing')
+def addListing():
+    print(request.args)
+    return 0
 
 
 if __name__ == "__main__":
