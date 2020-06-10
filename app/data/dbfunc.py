@@ -10,6 +10,8 @@ def getNextID(type):
     else:
         arr = c.execute("SELECT MAX(id) FROM listings WHERE userID='{}';".format(type)).fetchall()
     print(arr)
+    if arr[0][0] == None:
+        return 0
     return int(arr[0][0]) + 1
 
 def authUser(user,password):
@@ -31,9 +33,16 @@ def newAccount(user,password,password1):
     elif password != password1:
         return "Passwords do not match!"
     c.execute('INSERT INTO users(id, username, password, location) '
-              'VALUES({},\"{}\",\"{}\",\"null\");'.format(getNextID("user"), user, password))
+              'VALUES({},\"{}\",\"{}\");'.format(getNextID("user"), user, password))
     db.commit()
     return "success"
+
+def getUserInfo(user):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    arr = c.execute('SELECT * FROM users WHERE username=\"{}\"'.format(user)).fetchall()
+    print(arr)
+    return arr[0]
 
     
 def addListing(user,title,category,description,price):

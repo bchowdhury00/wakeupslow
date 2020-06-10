@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="border"></div>
+
+    <div class="input-group my-3 mx-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Contact Info: </span>
+        </div>
+        <input name="contact" class="form-control" placeholder="Phone Number, Email, etc." aria-label="Price"
+               aria-describedby="basic-addon1">
+    </div>
+
+    <div class="row">
+        <h3 class="mx-auto my-3"> Update Your Location </h3>
+        <div class="input-group mt-5 mx-5">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Address or Area: </span>
+            </div>
+            <input name="location" id="pac-input" type="text" class="form-control"
+                   placeholder="If left empty, will assume current location" aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+
+
+        <style>
+            /* Always set the map height explicitly to define the size of the div
+                   * element that contains the map. */
+            #map {
+                height: 400px;
+            }
+        </style>
+
+        <div class="mx-auto w-50 my-5 rounded" id="map"></div>
+
+        <script>
+            var loadFile = function (event) {
+                var image = document.getElementById('imagefile');
+                image.src = URL.createObjectURL(event.target.files[0]);
+                const file = event.target.files[0];
+            };
+
+
+            // This example adds a search box to a map, using the Google Place Autocomplete
+            // feature. People can enter geographical searches. The search box will return a
+            // pick list containing a mix of places and predicted search terms.
+
+            // This example requires the Places library. Include the libraries=places
+            // parameter when you first load the API. For example:
+            // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+            function initAutocomplete() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: {
+                        lat: -34.397,
+                        lng: 150.644
+                    },
+                    zoom: 12
+                });
+                infoWindow = new google.maps.InfoWindow;
+
+                // Try HTML5 geolocation.
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+
+                        infoWindow.setPosition(pos);
+                        infoWindow.setContent('Location found.');
+                        infoWindow.open(map);
+                        map.setCenter(pos);
+                    }, function () {
+                        handleLocationError(true, infoWindow, map.getCenter());
+                    });
+                } else {
+                    // Browser doesn't support Geolocation
+                    handleLocationError(false, infoWindow, map.getCenter());
+                }
+
+                // Create the search box and link it to the UI element.
+                var input = document.getElementById('pac-input');
+                var searchBox = new google.maps.places.SearchBox(input);
+
+
+                // Bias the SearchBox results towards current map's viewport.
+                map.addListener('bounds_changed', function () {
+                    searchBox.setBounds(map.getBounds());
+                });
+
+                var markers = [];
+                // Listen for the event fired when the user selects a prediction and retrieve
+                // more details for that place.
+                searchBox.addListener('places_changed', function () {
+                    var places = searchBox.getPlaces();
+
+                    if (places.length == 0) {
+                        return;
+                    }
+
+                    // Clear out the old markers.
+                    markers.forEach(function (marker) {
+                        marker.setMap(null);
+                    });
+                    markers = [];
+
+                    // For each place, get the icon, name and location.
+                    var bounds = new google.maps.LatLngBounds();
+                    places.forEach(function (place) {
+                        if (!place.geometry) {
+                            console.log("Returned place contains no geometry");
+                            return;
+                        }
+                        var icon = {
+                            url: place.icon,
+                            size: new google.maps.Size(71, 71),
+                            origin: new google.maps.Point(0, 0),
+                            anchor: new google.maps.Point(17, 34),
+                            scaledSize: new google.maps.Size(25, 25)
+                        };
+
+                        // Create a marker for each place.
+                        markers.push(new google.maps.Marker({
+                            map: map,
+                            icon: icon,
+                            title: place.name,
+                            position: place.geometry.location
+                        }));
+
+                        if (place.geometry.viewport) {
+                            // Only geocodes have viewport.
+                            bounds.union(place.geometry.viewport);
+                        } else {
+                            bounds.extend(place.geometry.location);
+                        }
+                    });
+                    map.fitBounds(bounds);
+                });
+            }
+
+
+            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                infoWindow.setPosition(pos);
+                infoWindow.setContent(browserHasGeolocation ?
+                    'Error: The Geolocation service failed.' :
+                    'Error: Your browser doesn\'t support geolocation.');
+                infoWindow.open(map);
+            }
+        </script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ key }}&libraries=places&callback=initAutocomplete"
+                async defer></script>
+
+    </div>
+    <div class="row">
+        <button type="submit" class="btn btn-outline-primary w-25 mx-auto my-5 text-primary"> Confirm Location</button>
+    </div>
+
+    <div class="border"></div>
+
+{% endblock %}
