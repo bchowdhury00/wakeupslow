@@ -26,7 +26,7 @@ def checkLogin():
     ePass = request.args['password']
     if (not authUser(eUser,ePass)):
         return render_template('login.html', alert="Username or Password incorrect")
-    session['Username'] = eUser
+    session['username'] = eUser
     return render_template('base.html', success="Logged in")
 
 @app.route('/logOut')
@@ -44,8 +44,8 @@ def createAccount():
     user = request.args['username']
     pass0 = request.args['password']
     pass1 = request.args['password-repeat']
-    message = newAccount(user,pass0,pass1)
-    if (message != "sucess"):
+    message = newAccount(user, pass0, pass1)
+    if (message != "success"):
         return render_template('register.html', alert=message)
     return render_template('login.html', success="Account Created")
 
@@ -55,8 +55,10 @@ def createListing():
     return render_template('create.html')
 
 @app.route('/addListing')
-def addListing():
-    print(request.args)
+def addL():
+    results = request.args
+    print(results)
+    addListing('c',results['title'],results['category'],results['description'],results['price'])
     return "hello"
 
 
