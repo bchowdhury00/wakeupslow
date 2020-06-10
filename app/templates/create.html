@@ -37,10 +37,10 @@
     </div>
     <div class="input-group my-3 mx-3">
       <div class="input-group-prepend">
-        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+        <span class="input-group-text btn" id="inputGroupFileAddon01" onclick="uploadImage()">Upload</span>
       </div>
       <div class="custom-file">
-        <input type="file" class="custom-file-input" onchange="readURL(this)" aria-describedby="inputGroupFileAddon01">
+        <input type="file" class="custom-file-input" accept="image/*" name="image" id="file" onchange="loadFile(event)">
         <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
       </div>
     </div>
@@ -85,20 +85,38 @@
   <div class="mx-auto w-75 my-5 rounded" id="map"></div>
 
   <script>
+    var loadFile = function(event) {
+      var image = document.getElementById('imagefile');
+      image.src = URL.createObjectURL(event.target.files[0]);
+      console.log(image.src);
+      console.log(event.target.files[0]);
 
 
-    function readURL(input) {
-           if (input.files && input.files[0]) {
-               var reader = new FileReader();
+      // Save image into localStorage
+      try {
+        localStorage.setItem("imagefile", event.target.files[0]);
+      } catch (e) {
+        console.log("Storage failed: " + e);
+      }
+      console.log(localStorage['imagefile']);
 
-               reader.onload = function (e) {
-                   $('#imagefile')
-                       .attr('src', e.target.result);
-               };
+      const files = event.target.files[0];
+      const formData = new FormData()
+      formData.append('myFile', files[0])
 
-               reader.readAsDataURL(input.files[0]);
-           }
-       }
+      fetch('/uploadPicture', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.path)
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    };
+
 
 
 
