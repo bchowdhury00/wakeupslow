@@ -6,10 +6,11 @@ def getNextID(type):
     db = sqlite3.connect(DB_FILE)
     c = db.cursor()
     if type == "user":
-        arr = c.execute("SELECT id FROM users;").fetchall()
+        arr = c.execute("SELECT MAX (id) FROM users;").fetchall()
     else:
-        arr = c.execute("SELECT id FROM listings WHERE userID='{}';".format(type)).fetchall()
-    return len(arr)
+        arr = c.execute("SELECT MAX(id) FROM listings WHERE userID='{}';".format(type)).fetchall()
+    print(arr)
+    return int(arr[0][0]) + 1
 
 def authUser(user,password):
     db = sqlite3.connect(DB_FILE)

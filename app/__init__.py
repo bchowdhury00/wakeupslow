@@ -59,7 +59,7 @@ def addL():
     results = request.args
     print(results)
     addListing('c',results['title'],results['category'],results['description'],results['price'])
-    return "hello"
+    return render_template('base.html', success="Listing Added")
 
 
 if __name__ == "__main__":
