@@ -15,9 +15,19 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 DB_FILE = "data/database.db"
 
 
-@app.route('/')
+@app.route('/home')
 def hello_world():
-    return render_template('base.html')
+    listings = {
+        "listing1" : {
+            "title" : "title1",
+            "vendor" : "username",
+            "imagesrc" : "static/images/index.png",
+            "location" : "Brooklyn NY",
+            "price" : "00.00",
+            "type" : "Lacrosse"
+        }
+    }
+    return render_template('home.html', listings = listings)
 
 
 @app.route('/another')
