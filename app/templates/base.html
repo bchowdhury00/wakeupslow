@@ -19,12 +19,12 @@
             <a class="navbar-brand" href="/">Pull Up Trading</a>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 {% if 'username' in session %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/createListing">Create a Listing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">View messages</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/createListing">Create a Listing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">View messages</a>
+                    </li>
                 {% endif %}
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -45,23 +45,25 @@
 
 <body>
 <div class="card text-center h-100">
-    <div class="card-header">
-        <ul class="nav nav-pills card-header-pills">
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Category1</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Category2</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Category3</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-        </ul>
-    </div>
 
+    {% if 'username' in session %}
+        <div class="card-header">
+            <ul class="nav nav-pills card-header-pills">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Category1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Category2</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Category3</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
     {% if alert is defined %}
         <div class="alert alert-danger" role="alert">
             {{ alert }}
@@ -71,6 +73,7 @@
             {{ success }}
         </div>
     {% endif %}
+
 
 
 

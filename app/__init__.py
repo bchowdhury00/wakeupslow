@@ -9,7 +9,20 @@ DB_FILE = "data/database.db"
 
 @app.route('/')
 def hello_world():
-    return render_template('base.html')
+    if 'username' in session:
+        return redirect(url_for('home'))
+    return render_template('landing.html')
+
+@app.route('/home')
+def home():
+    if len(request.args)>0:
+        if request.args['mType']=='0':
+            return render_template('home.html', alert="Username or Password incorrect")
+        elif request.args['mType']=='1':
+            return render_template('home.html', success="Logged In")
+        else:
+            return render_template('home.html', success="Listing Added")
+    return render_template('home.html')
 
 @app.route('/another')
 def another():
@@ -17,6 +30,11 @@ def another():
 
 @app.route('/login')
 def login():
+    if len(request.args) > 0:
+        if request.args['mType']=='0':
+            return render_template('login.html', alert="Username or Password incorrect")
+        else:
+            return render_template('login.html', success="Account Created")
     return render_template('login.html')
 
 @app.route('/checkLogin')
@@ -24,17 +42,22 @@ def checkLogin():
     eUser = request.args['username']
     ePass = request.args['password']
     if (not authUser(eUser,ePass)):
-        return render_template('login.html', alert="Username or Password incorrect")
+        return redirect(url_for('login', mType=0))
     session['username'] = eUser
-    return render_template('base.html', success="Logged in")
+    return redirect(url_for('home', mType=1))
 
 @app.route('/logOut')
 def logOut():
     session.pop('username')
-    return render_template('base.html', success='Logged Out')
+    return render_template('base.html', success="Logged Out")
 
 @app.route('/register')
 def register():
+    if len(request.args)>0:
+        if request.args['mType']=='0':
+            return render_template('register.html', alert="Username in use")
+        else:
+            return render_template('register.html', alert="Passwords do not match")
     return render_template('register.html')
 
 @app.route('/createAccount')
@@ -45,8 +68,8 @@ def createAccount():
     pass1 = request.args['password-repeat']
     message = newAccount(user, pass0, pass1)
     if (message != "success"):
-        return render_template('register.html', alert=message)
-    return render_template('login.html', success="Account Created")
+        return redirect(url_for('register', mType=message))
+    return render_template('base.html', success="Logged Out")
 
 @app.route('/profile')
 def profile():
@@ -64,7 +87,7 @@ def addL():
     results = request.args
     print(results)
     addListing(session['username'],results['title'],results['category'],results['description'],results['price'])
-    return render_template('base.html', success="Listing Added")
+    return redirect(url_for('home', mType=2))
 
 
 if __name__ == "__main__":

@@ -29,9 +29,9 @@ def newAccount(user,password,password1):
     c = db.cursor()
     arr = c.execute('SELECT * FROM users WHERE username=\"{}\"'.format(user)).fetchall()
     if len(arr) > 0:
-        return "Username already in use"
+        return 0
     elif password != password1:
-        return "Passwords do not match!"
+        return 1
     c.execute('INSERT INTO users(id, username, password, location) '
               'VALUES({},\"{}\",\"{}\");'.format(getNextID("user"), user, password))
     db.commit()
