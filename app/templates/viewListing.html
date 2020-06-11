@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="row">
+<div class="col">
+<div class="list">
+  <div class="list-item my-3">
+<h2>  Title:  {{listing['title']}}</h2>
+  </div>
+  <div class="list-item my-3">
+  <p> Vendor:  {{listing['vendor']}} </p>
+  </div>
+  <div class="list-item my-3">
+  <p> Price:  {{listing['price']}} </p>
+  </div>
+  <div class="list-item my-3">
+  <p> Description:  {{listing['description']}} </p>
+  </div>
+  <div class="list-item my-3">
+  <p> Location:  {{listing['location']}} </p>
+  </div>
+  <div class="list-item my-3">
+  <p> Category:  {{listing['type']}} </p>
+  </div>
+</div>
+<button class="btn btn-outline-success my-3"> Message Vendor </button>
+</div>
+<div class="border"></div>
+<div class="col my-auto mx-auto">
+<image src="{{listing['imagesrc']}}"> </image>
+</div>
+</div
+{% endblock %}

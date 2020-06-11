@@ -53,6 +53,19 @@ def hello_world():
     }
     return render_template('home.html', listings=listings)
 
+@app.route("/viewListing")
+def viewListing():
+    listing = {
+        "title": "randomTitle",
+        "vendor": "username",
+        "imagesrc": "static/images/index.png",
+        "location": "{latitude:-8.783195,longitude:34.508522}",
+        "price": "00.00",
+        "type": "Football",
+        "description": "description"
+    }
+    return render_template("viewListing.html", listing = listing)
+
 
 @app.route('/another')
 def another():
