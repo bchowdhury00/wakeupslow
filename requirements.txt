@@ -4,6 +4,7 @@ Click==7.0
 dnspython==1.16.0
 eventlet==0.25.2
 Flask==1.1.1
+flask-ngrok==0.0.25
 Flask-SocketIO==4.3.0
 greenlet==0.4.16
 idna==2.8
