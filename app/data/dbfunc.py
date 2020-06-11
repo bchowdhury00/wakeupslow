@@ -157,11 +157,8 @@ def getConvo(fromUser, toUser):
     arr = c.execute('SELECT * FROM messages WHERE (fromUser={} and toUser={}) or (fromUser={} and toUser={});'.format(fromID, toID, toID, fromID)).fetchall()
     print(packageMessages(arr,usernames))
     result['messages'] = packageMessages(arr,usernames)
-
     json_object = json.dumps(result, indent=4)
-
-
-    return result
+    return json_object
 
 
 def packageMessages(arr,usernames):
