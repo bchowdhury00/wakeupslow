@@ -94,10 +94,8 @@ def profile():
     if request.method == 'GET':
         arr = getUserInfo(session['username'])
         print(arr)
-        print(request.args)
         if len(request.args) > 0:
             if request.args['mType']=='0':
-                print('loco')
                 return render_template('profileInfo.html', userInfo=arr, success='Updated Location')
             elif request.args['mType']=='1':
                 return render_template('profileInfo.html', userInfo=arr, success='Updated Contact Info')
