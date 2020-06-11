@@ -1,6 +1,19 @@
 {% extends "base.html" %}
 
 {% block body %}
+    <div class="card-header">
+        <ul class="nav nav-pills card-header-pills">
+            <li class="mx-auto nav-item">
+                <a class="nav-link" href="/profile">Account Information</a>
+            </li>
+            <li class="mx-auto nav-item">
+                <a class="nav-link" href="/profile/myListings">My Listings</a>
+            </li>
+            <li class="mx-auto nav-item">
+                <a class="nav-link" href="/profile/myPurchases">My Purchases</a>
+            </li>
+        </ul>
+    </div>
     <br>
     <p class="mx-auto my-4"> Welcome: {{ session['username'] }}</p>
     <h2>Account Information</h2>
@@ -11,7 +24,7 @@
     <br>
     <br>
 
-    <form id="contactForm" method="POST"  style="display: none">
+    <form id="contactForm" method="POST" style="display: none">
         <div class="border"></div>
         <div class="row">
             <h3 class="mx-auto my-3"> Update Your Contact Info </h3>
@@ -179,7 +192,7 @@
 
     <div class="border"></div>
 
-    <script src="./static/js/profile.js"></script>
+    <script src="./static/js/profileInfo.js"></script>
 
 
 {% endblock %}

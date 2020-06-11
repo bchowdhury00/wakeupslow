@@ -87,7 +87,7 @@ def profile():
     if request.method == 'GET':
         arr = getUserInfo(session['username'])
         print(arr)
-        return render_template('profile.html', userInfo=arr)
+        return render_template('profileInfo.html', userInfo=arr)
     else:
         arr = request.form
         print(arr)
@@ -99,8 +99,15 @@ def profile():
             updateInfo(session['username'], 'location', request.form['location'])
         else:
             message = 'wat'
-        return render_template('profile.html', userInfo=getUserInfo(session['username']), success=message)
+        return render_template('profileInfo.html', userInfo=getUserInfo(session['username']), success=message)
 
+@app.route('/profile/myListings')
+def myListings():
+    return render_template('profileListings.html', category='listings')
+
+@app.route('/profile/myPurchases')
+def myPurchases():
+    return render_template('profileListings.html', category='purchases')
 
 @app.route('/createListing', methods=['GET', 'POST'])
 def createListing():

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="card-header">
+        <ul class="nav nav-pills card-header-pills">
+            <li class="mx-auto nav-item">
+                <a class="nav-link" href="/profile">Account Information</a>
+            </li>
+            <li class="mx-auto nav-item">
+                <a class="nav-link" href="/profile/myListings">My Listings</a>
+            </li>
+            <li class="mx-auto nav-item">
+                <a class="nav-link" href="/profile/myPurchases">My Purchases</a>
+            </li>
+        </ul>
+    </div>
+
+    {{ category }}
+
+
+
+
+{% endblock %}
