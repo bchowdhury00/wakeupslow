@@ -100,7 +100,7 @@ def profile():
             newlocation = request.get_json()
             print(newlocation)
             message = 'Updated Location'
-            res = {"redirect": "/profile"}
+            res = {"redirect": "/profile", "message":message}
             # updateInfo(session['username'], 'location', newlocations)
             return res
         else:

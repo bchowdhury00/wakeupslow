@@ -44,5 +44,9 @@ function confirmLocation() {
     .then(data => {
       console.log(window.location);
       window.location = window.location;
+      var alert = document.getElementById("alertSuccess");
+      alert.innerHTML = data.message;
+      alert.style = "height:100px";
+      console.log(data);
     })
 }
