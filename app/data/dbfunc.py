@@ -147,5 +147,63 @@ def getConvo(fromUser, toUser):
     c = db.cursor()
     fromID = getUserInfo(fromUser)[0]
     toID = getUserInfo(toUser)[0]
-    result = ""
+    sampleMessages = "INSERT INTO messages(fromUser,toUser,content,tStamp) VALUES(0,3,'do you wanna...','2020-06-11 14:01:03.123'); "
+    result={}
+    result['fromUser'] = fromUser
+    result['toUser'] = toUser
+    fromArr = c.execute('SELECT * FROM messages WHERE fromUser={} and toUser={};'.format(fromID,toID)).fetchall()
+    print(fromArr)
+    toArr = c.execute('SELECT * FROM messages WHERE fromUser={} and toUser={};'.format(toID,fromID)).fetchall()
+    print(toArr)
+    print(packageMessages(fromArr))
+    result['fromMessages'] = packageMessages(fromArr)
+    result['toMessages'] = packageMessages(toArr)
+
+    json_object = json.dumps(result,indent = 4)
+    with open('data/jsonTest.json','w') as outfile:
+        outfile.write(json_object)
+
+    return result
+
+
+
+def packageMessages(arr):
+    result={}
+    for i in range(len(arr)):
+        temp={}
+        temp['content'] = arr[i][2]
+        temp['timestamp'] = arr[i][3]
+        result[i] = temp
+    return result
+
+def getConvo2(fromUser, toUser):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    fromID = getUserInfo(fromUser)[0]
+    toID = getUserInfo(toUser)[0]
+    usernames={}
+    usernames[fromID] = fromUser
+    usernames[toID] = toUser
+    result = {}
+    result['fromUser'] = fromUser
+    result['toUser'] = toUser
+    arr = c.execute('SELECT * FROM messages WHERE (fromUser={} and toUser={}) or (fromUser={} and toUser={});'.format(fromID, toID, toID, fromID)).fetchall()
+    print(packageMessages2(arr,usernames))
+    result['messages'] = packageMessages2(arr,usernames)
+
+    json_object = json.dumps(result, indent=4)
+    with open('data/jsonTest2.json', 'w') as outfile:
+        outfile.write(json_object)
+
+    return result
+
+
+def packageMessages2(arr,usernames):
+    result={}
+    for i in range(len(arr)):
+        temp={}
+        temp['fromUser'] = usernames[arr[i][0]]
+        temp['content'] = arr[i][2]
+        temp['timestamp'] = arr[i][3]
+        result[i] = temp
     return result
