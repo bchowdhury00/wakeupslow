@@ -9,6 +9,7 @@ function editContact(){
     document.getElementById('locationForm').style.display = 'none';
     document.getElementById('locationButton').style.visibility = 'visible';
     document.getElementById('infoButton').style.visibility = 'hidden';
+    document.getElementById('contactForm').scrollIntoView();
 }
 
 function editLocation(){
@@ -17,6 +18,7 @@ function editLocation(){
     document.getElementById('contactForm').style.display = 'none';
     document.getElementById('infoButton').style.visibility = 'visible';
     document.getElementById('locationButton').style.visibility = 'hidden';
+    document.getElementById('locationForm').scrollIntoView();
 }
 
 
