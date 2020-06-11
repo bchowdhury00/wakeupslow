@@ -22,7 +22,7 @@ def hello_world():
             "title": "title1",
             "vendor": "username",
             "imagesrc": "static/images/index.png",
-            "location": "Brooklyn NY",
+            "location": "{latitude:-8.783195,longitude:34.508522}",
             "price": "00.00",
             "type": "Lacrosse"
         },
