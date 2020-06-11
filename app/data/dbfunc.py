@@ -32,8 +32,8 @@ def newAccount(user,password,password1):
         return 0
     elif password != password1:
         return 1
-    c.execute('INSERT INTO users(id, username, password, location, contactInfo) '
-              'VALUES({},\"{}\",\"{}\",\"{}\");'.format(getNextID("user"), user, password))
+    c.execute('INSERT INTO users(id, username, password) '
+              'VALUES({},\"{}\",\"{}\");'.format(getNextID("user"), user, password))
     db.commit()
     return "success"
 
@@ -45,7 +45,7 @@ def getUserInfo(user):
     return arr[0]
 
     
-def addListing(user,title,category,description,price):
+def addListing(user,title,category,description,price,picture):
     db = sqlite3.connect(DB_FILE)
     c = db.cursor()
     arr = c.execute('SELECT id FROM users WHERE username=\"{}\"'.format(user)).fetchall()
@@ -53,8 +53,17 @@ def addListing(user,title,category,description,price):
     userID = int(arr[0][0])
     querry = 'INSERT INTO listings(id, userID, itemName, itemCategory, itemDescription, price, picture, purchasedBy) ' \
              'VALUES({},{},\"{}\",\"{}\",\"{}\",{},\"{}\",{});'.format(getNextID(userID), userID, title, category,
-                                                                     description, price, "FILENAME", 0)
+                                                                     description, price, picture, 0)
     print(querry)
     c.execute(querry)
     db.commit()
     return "success"
+
+def getFileName(user):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    userID = getUserInfo(user)[0]
+    filename = "U{}L{}".format(userID, getNextID(userID))
+    print(filename)
+    return filename
+
