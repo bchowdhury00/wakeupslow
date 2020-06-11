@@ -43,10 +43,6 @@ function confirmLocation() {
     }).then(res => res.json())
     .then(data => {
       console.log(window.location);
-      window.location = window.location;
-      var alert = document.getElementById("alertSuccess");
-      alert.innerHTML = data.message;
-      alert.style = "height:100px";
-      console.log(alert);
+      window.location = data.redirect;
     })
 }

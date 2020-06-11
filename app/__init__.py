@@ -94,25 +94,27 @@ def profile():
     if request.method == 'GET':
         arr = getUserInfo(session['username'])
         print(arr)
+        print(request.args)
+        if len(request.args) > 0:
+            if request.args['mType']=='0':
+                print('loco')
+                return render_template('profileInfo.html', userInfo=arr, success='Updated Location')
+            elif request.args['mType']=='1':
+                return render_template('profileInfo.html', userInfo=arr, success='Updated Contact Info')
         return render_template('profileInfo.html', userInfo=arr)
     else:
         if request.get_json():
             newlocation = request.get_json()
             print(newlocation)
             message = 'Updated Location'
-            res = {"redirect": "/profile", "message":message}
+            res = {"redirect": "/profile?mType=0", "message":message}
             updateInfo(session['username'], 'location', newlocation)
-            #return res
+            return res
         else:
             arr = request.form
             print(arr)
-            if 'contact' in arr:
-                message = 'Updated Contact Info'
-                updateInfo(session['username'], 'contactInfo', request.form['contact'])
-            else:
-                message = 'wat'
-        print(message)
-        return render_template('profileInfo.html', userInfo=getUserInfo(session['username']), success=message)
+            updateInfo(session['username'], 'contactInfo', request.form['contact'])
+            return redirect(url_for('profile', mType=1))
 
 
 @app.route('/profile/myListings/active')
