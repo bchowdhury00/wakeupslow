@@ -18,16 +18,32 @@ DB_FILE = "data/database.db"
 @app.route('/home')
 def hello_world():
     listings = {
-        0 : {
-            "title" : "title1",
-            "vendor" : "username",
-            "imagesrc" : "static/images/index.png",
-            "location" : "Brooklyn NY",
-            "price" : "00.00",
-            "type" : "Lacrosse"
+        0: {
+            "title": "title1",
+            "vendor": "username",
+            "imagesrc": "static/images/index.png",
+            "location": "Brooklyn NY",
+            "price": "00.00",
+            "type": "Lacrosse"
+        },
+        1: {
+            "title": "title1",
+            "vendor": "username",
+            "imagesrc": "static/images/index.png",
+            "location": "NY",
+            "price": "00.00",
+            "type": "Lacrosse"
+        },
+        2: {
+            "title": "title1",
+            "vendor": "username",
+            "imagesrc": "static/images/index.png",
+            "location": "Manhattan NY",
+            "price": "00.00",
+            "type": "Lacrosse"
         }
     }
-    return render_template('home.html', listings = listings)
+    return render_template('home.html', listings=listings)
 
 
 @app.route('/another')
@@ -102,7 +118,6 @@ def upload_file():
             return redirect(url_for('createListing',
                                     filename=filename))
     return ''
-
 
 
 if __name__ == "__main__":
