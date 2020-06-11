@@ -1,93 +1,85 @@
 {% extends "base.html" %}
 
 {% block body %}
-    <div class="card-header">
-        <ul class="nav nav-pills card-header-pills">
-            <li class="mx-auto nav-item">
-                <a class="nav-link" href="/profile">Account Information</a>
-            </li>
-            <li class="mx-auto nav-item">
-                <a class="nav-link
+<div class="card-header">
+  <ul class="nav nav-pills card-header-pills">
+    <li class="mx-auto nav-item">
+      <a class="nav-link" href="/profile">Account Information</a>
+    </li>
+    <li class="mx-auto nav-item">
+      <a class="nav-link
                 {% if category != 'purchases' %}
                     active
                 {% endif %}
                 " href="/profile/myListings/active">My Listings</a>
-            </li>
-            <li class="mx-auto nav-item">
-                <a class="nav-link
+    </li>
+    <li class="mx-auto nav-item">
+      <a class="nav-link
                 {% if category == 'purchases' %}
                     active
                 {% endif %}
                 " href="/profile/myPurchases">My Purchases</a>
-            </li>
-        </ul>
-    </div>
-    {% if category != 'purchases' %}
-        <div class="card-header">
-            <ul class="nav nav-pills card-header-pills">
-                <li class="mx-auto nav-item">
-                    <a class="nav-link
+    </li>
+  </ul>
+</div>
+{% if category != 'purchases' %}
+<div class="card-header">
+  <ul class="nav nav-pills card-header-pills">
+    <li class="mx-auto nav-item">
+      <a class="nav-link
                     {% if category == 'myActive' %}
                         active
                     {% endif %}
                     " href="/profile/myListings/active">Active</a>
-                </li>
-                <li class="mx-auto nav-item">
-                    <a class="nav-link
+    </li>
+    <li class="mx-auto nav-item">
+      <a class="nav-link
                     {% if category == 'mySold' %}
                         active
                     {% endif %}
                     " href="/profile/myListings/sold">Sold</a>
-                </li>
-            </ul>
-        </div>
-    {% endif %}
-    {{ category }}
-    <div class="row">
-    <div class="col-4" style="overflow-y:scroll; height:600px">
-        <div class="list">
-            {% for listing in listings %}
-                <div class="list-item">
-                    <div class="card mx-2 my-3" style="height:200px">
-                        <div class="row h-75 w-100">
-                            <div class="col-4">
-                                <image class="image w-100 h-75 my-2 mx-2" src="{{ listings[listing]['imagesrc'] }}"
-                                </image>
-                            </div>
-                            <div class="col-8">
-                                <div class="card-title">
-                                    <h4> {{ listings[listing]['title'] }}</h4>
-                                </div>
-                                <div class="border"></div>
-                                <div class="row" style="font-size:0.7rem">
-                                    <div class="col">
-                                        <p {% if category != 'purchases' %}
-                                            style="visibility:hidden"
-                                        {% endif %}
-                                        > Vendor : {{ listings[listing]['vendor'] }} </p>
-                                        <p {% if category != 'mySold' %}
-                                            style="visibility:hidden"
-                                        {% endif %}
-                                        > Sold to : {{ listings[listing]['soldTo'] }} </p>
-                                        <p> Category : {{ listings[listing]['type'] }} </p>
-                                    </div>
-                                    <div class="col">
-                                        <p> Location : {{ listings[listing]['location'] }} </p>
-                                        <p> Price : {{ listings[listing]['price'] }} </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border"></div>
-                        <div class="row  my-2">
-                            <a class="btn btn-outline-primary mx-auto text-primary">View Listing</a>
-                        </div>
-                    </div>
+    </li>
+  </ul>
+</div>
+{% endif %}
+{{ category }}
+<div class="row mx-auto my-3" style="overflow-x:scroll; width:1000px">
+    <div class="list">
+      {% for listing in listings %}
+      <div class="list-item">
+        <div class="card mx-2 my-3" style="height:200px; width:400px">
+          <div class="row h-75 w-100">
+            <div class="col-4">
+              <image class="image w-100 h-75 my-2 mx-2" src="{{ listings[listing]['imagesrc'] }}" </image>
+            </div>
+            <div class="col-8">
+              <div class="card-title">
+                <h4> {{ listings[listing]['title'] }}</h4>
+              </div>
+              <div class="border"></div>
+              <div class="row" style="font-size:0.7rem">
+                <div class="col">
+                  <p {% if category != 'purchases' %} style="visibility:hidden" {% endif %}> Vendor : {{ listings[listing]['vendor'] }} </p>
+                  <p {% if category != 'mySold' %} style="visibility:hidden" {% endif %}> Sold to : {{ listings[listing]['soldTo'] }} </p>
+                  <p> Category : {{ listings[listing]['type'] }} </p>
                 </div>
-            {% endfor %}
+                <div class="col">
+                  <p> Location : {{ listings[listing]['location'] }} </p>
+                  <p> Price : {{ listings[listing]['price'] }} </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border"></div>
+          <div class="row  my-2">
+            <a class="btn btn-outline-primary mx-auto text-primary">View Listing</a>
+          </div>
         </div>
+      </div>
+      {% endfor %}
+    </div>
     </div>
 
 
 
-{% endblock %}
+  {% endblock %}
