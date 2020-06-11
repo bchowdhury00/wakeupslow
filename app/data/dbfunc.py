@@ -1,4 +1,5 @@
 import sqlite3
+import json
 
 DB_FILE = "app/data/database.db"
 
@@ -137,4 +138,14 @@ def getMyPurchased(user):
         entry['price'] = arr[5]
         entry['type'] = arr[3]
         result[name] = entry
+    return result
+
+#SELECT * FROM messages WHERE (fromUser = 0 AND toUser = 2) OR (fromUser = 2 and toUser = 0);
+
+def getConvo(fromUser, toUser):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    fromID = getUserInfo(fromUser)[0]
+    toID = getUserInfo(toUser)[0]
+    result = ""
     return result
