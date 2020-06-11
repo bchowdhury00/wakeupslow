@@ -174,9 +174,19 @@ def packageMessages(arr,usernames):
         result[i] = temp
     return result
 
-def getConvos(user):
+def getOpenConvos(user):
     db = sqlite3.connect(DB_FILE)
     c = db.cursor()
+    userID = getUserInfo(user)[0]
     result=[]
-
+    arr = c.execute('SELECT toUser FROM messages WHERE fromUser={};'.format(userID)).fetchall()
+    print(arr)
+    for elem in arr:
+        if elem[0] not in result:
+            result.append(elem[0])
+    arr = c.execute('SELECT fromUser FROM messages WHERE toUser={};'.format(userID)).fetchall()
+    print(arr)
+    for elem in arr:
+        if elem[0] not in result:
+            result.append(elem[0])
     return result
