@@ -155,10 +155,18 @@ def createListing():
         return redirect(url_for('home', mType=2))
 
 
+@app.route('/messages/<username>')
+def idk(username):
+    arr=getOpenConvos(username)
+    return str(arr)
+
+
 @app.route('/messages/<username>/<convoID>')
 def viewMessages(username,convoID):
-
-    return 'boop'
+    arr=convoID.split('x')
+    print(arr)
+    ob=getConvo(username,getUserInfo(int(arr[1]))[1])
+    return ob
 
 
 if __name__ == "__main__":
