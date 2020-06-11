@@ -18,7 +18,7 @@ DB_FILE = "data/database.db"
 @app.route('/home')
 def hello_world():
     listings = {
-        "listing1" : {
+        0 : {
             "title" : "title1",
             "vendor" : "username",
             "imagesrc" : "static/images/index.png",
