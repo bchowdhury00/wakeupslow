@@ -3,91 +3,93 @@
 {% block body %}
 
 
-
-
-
-
-
-
-<form action="/createListing" method="POST" enctype="multipart/form-data">
-  <div class="row">
-    <div class="col">
-      <br>
-      <div class="input-group my-3 mx-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">Listing Title: </span>
+    <form action="/createListing" method="POST" enctype="multipart/form-data">
+        <div class="card-header">
+            <ul class="nav nav-pills card-header-pills mr-auto mt-2 mt-lg-0">
+                <li class="mx-auto nav-item">
+                    <h3 class="nav-item">Create A Listing</h3>
+                </li>
+            </ul>
         </div>
-        <input name="title" type="text" class="form-control" placeholder="TItle" aria-label="Username" aria-describedby="basic-addon1">
-      </div>
+        <div class="row">
+            <div class="col">
+                <br>
+                <div class="input-group my-3 mx-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Listing Title: </span>
+                    </div>
+                    <input name="title" type="text" class="form-control" placeholder="TItle" aria-label="Username"
+                           aria-describedby="basic-addon1">
+                </div>
 
-      <div class="input-group my-3 mx-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">Listing Type: </span>
+                <div class="input-group my-3 mx-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Listing Type: </span>
+                    </div>
+                    <select name="category" class="form-control">
+                        <option>Type</option>
+                    </select>
+                </div>
+
+                <div class="input-group my-3 mx-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Description</span>
+                    </div>
+                    <textarea name="description" class="form-control" aria-label="With textarea"></textarea>
+                </div>
+                <div class="input-group my-3 mx-3">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" accept="image/*" name="image" id="file"
+                               onchange="loadFile(event)">
+                        <label id="inputLabel" class="custom-file-label" for="inputGroupFile01">Choose image</label>
+                    </div>
+                </div>
+
+
+                <div class="input-group my-3 mx-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Asking Price: </span>
+                    </div>
+                    <input name="price" class="form-control" placeholder="00.00" aria-label="Price"
+                           aria-describedby="basic-addon1">
+                </div>
+
+
+            </div>
+            <div class="col">
+                <img id="imagefile" src="static/images/index.png"
+                     class="img-fluid w-75 h-75 mx-auto my-5 rounded"> </img>
+            </div>
         </div>
-        <select name="category" class="form-control">
-          <option>Type</option>
-        </select>
-      </div>
 
-      <div class="input-group my-3 mx-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Description</span>
+        <div class="border"></div>
+
+        <script>
+            var loadFile = function (event) {
+                var image = document.getElementById('imagefile');
+                image.src = URL.createObjectURL(event.target.files[0]);
+                const file = event.target.files[0];
+                console.log(event.target.files[0]);
+                var label = document.getElementById("inputLabel");
+                label.innerHTML = event.target.files[0]['name'];
+            };
+
+
+            // This example adds a search box to a map, using the Google Place Autocomplete
+            // feature. People can enter geographical searches. The search box will return a
+            // pick list containing a mix of places and predicted search terms.
+
+            // This example requires the Places library. Include the libraries=places
+            // parameter when you first load the API. For example:
+            // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+        </script>
+
+        <div class="row">
+            <button type="submit" class="btn btn-outline-primary w-25 mx-auto my-5"> Create Listing</button>
         </div>
-        <textarea name="description" class="form-control" aria-label="With textarea"></textarea>
-      </div>
-      <div class="input-group my-3 mx-3">
-        <div class="custom-file">
-          <input type="file" class="custom-file-input" accept="image/*" name="image" id="file" onchange="loadFile(event)">
-          <label id="inputLabel" class="custom-file-label" for="inputGroupFile01">Choose image</label>
-        </div>
-      </div>
 
-
-      <div class="input-group my-3 mx-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">Asking Price: </span>
-        </div>
-        <input name="price" class="form-control" placeholder="00.00" aria-label="Price" aria-describedby="basic-addon1">
-      </div>
-
-
-    </div>
-    <div class="col">
-      <img id="imagefile" src="static/images/index.png" class="img-fluid w-75 h-75 mx-auto my-5 rounded"> </img>
-    </div>
-  </div>
-
-  <div class="border"></div>
-
-    <script>
-      var loadFile = function(event) {
-        var image = document.getElementById('imagefile');
-        image.src = URL.createObjectURL(event.target.files[0]);
-        const file = event.target.files[0];
-        console.log(event.target.files[0]);
-        var label = document.getElementById("inputLabel");
-        label.innerHTML = event.target.files[0]['name'];
-      };
-
-
-
-
-
-      // This example adds a search box to a map, using the Google Place Autocomplete
-      // feature. People can enter geographical searches. The search box will return a
-      // pick list containing a mix of places and predicted search terms.
-
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
-  </script>
-
-  <div class="row">
-    <button type="submit" class="btn btn-outline-primary w-25 mx-auto my-5"> Create Listing </button>
-  </div>
-
-</form>
+    </form>
 
 
 
