@@ -42,8 +42,10 @@ def login():
         if len(request.args) > 0:
             if request.args['mType'] == '0':
                 return render_template('login.html', alert="Username or Password incorrect")
-            else:
+            elif request.args['mType'] == '1':
                 return render_template('login.html', success="Account Created")
+            else:
+                return render_template('login.html', alert="You must be logged in")
         return render_template('login.html')
     else:
         eUser = request.form['username']
@@ -92,6 +94,8 @@ def createListing():
     if request.method == 'GET':
         return render_template('create.html')
     else:
+        if 'username' not in session:
+            return redirect(url_for('login', mType=2))
         results = request.form
         print(results)
         filename = getFileName(session['username'])
