@@ -1,6 +1,16 @@
 import os
+import platform
 from flask import Flask, request, redirect, session, render_template, url_for, flash
-UPLOAD_FOLDER = os.getcwd() + "\\app\\static\\images"
+
+filExtension = ""
+
+if (platform.system() == "Windows"):
+    filExtension = "\\app\\static\\images"
+elif (platform.system() == "Darwin" or platform.system() == "Linux"):
+        filExtension = "/static/images"
+
+
+UPLOAD_FOLDER = os.getcwd() + filExtension
 
 app = Flask(__name__)
 app.config['IMAGE_UPLOADS'] = UPLOAD_FOLDER
