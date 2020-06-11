@@ -96,14 +96,20 @@ def profile():
         print(arr)
         return render_template('profileInfo.html', userInfo=arr)
     else:
+        if request.method == "POST":
+            newlocation = request.get_json()
+            print(newlocation)
+            res = {"redirect": "/profile"}
+            # updateInfo(session['username'], 'location', newlocations)
+            return res
         arr = request.form
         print(arr)
         if 'contact' in arr:
             message = 'Updated Contact Info'
             updateInfo(session['username'], 'contactInfo', request.form['contact'])
-        elif 'location' in arr:
-            message = 'Updated Location'
-            updateInfo(session['username'], 'location', request.form['location'])
+        # elif 'location' in arr:
+        #     message = 'Updated Location'
+        #     updateInfo(session['username'], 'location', request.form['location'])
         else:
             message = 'wat'
         return render_template('profileInfo.html', userInfo=getUserInfo(session['username']), success=message)
