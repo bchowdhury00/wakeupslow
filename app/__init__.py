@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os, platform
-from data.dbfunc import *
+from app.data.dbfunc import *
 
 
 UPLOAD_FOLDER = ""
@@ -101,20 +101,19 @@ def profile():
             print(newlocation)
             message = 'Updated Location'
             res = {"redirect": "/profile", "message":message}
-            # updateInfo(session['username'], 'location', newlocations)
-            return res
+            updateInfo(session['username'], 'location', newlocation)
+            #return res
         else:
             arr = request.form
             print(arr)
             if 'contact' in arr:
                 message = 'Updated Contact Info'
                 updateInfo(session['username'], 'contactInfo', request.form['contact'])
-        # elif 'location' in arr:
-        #     message = 'Updated Location'
-        #     updateInfo(session['username'], 'location', request.form['location'])
             else:
                 message = 'wat'
+        print(message)
         return render_template('profileInfo.html', userInfo=getUserInfo(session['username']), success=message)
+
 
 @app.route('/profile/myListings/active')
 def myListings():
@@ -132,6 +131,7 @@ def mySold():
 def myPurchases():
     data = getMyPurchased(session['username'])
     return render_template('profileListings.html', listings=data, category='purchases')
+
 
 @app.route('/createListing', methods=['GET', 'POST'])
 def createListing():
@@ -153,6 +153,12 @@ def createListing():
         addListing(session['username'], results['title'], results['category'], results['description'], results['price'],
                    filename)
         return redirect(url_for('home', mType=2))
+
+
+@app.route('/messages/<username>/<convoID>')
+def viewMessages(username,convoID):
+
+    return 'boop'
 
 
 if __name__ == "__main__":
