@@ -101,13 +101,22 @@ def profile():
             message = 'wat'
         return render_template('profileInfo.html', userInfo=getUserInfo(session['username']), success=message)
 
-@app.route('/profile/myListings')
+@app.route('/profile/myListings/active')
 def myListings():
-    return render_template('profileListings.html', category='listings')
+    data = getMyListings(session['username'], True)
+    return render_template('profileListings.html', listings=data, category='myActive')
+
+
+@app.route('/profile/myListings/sold')
+def mySold():
+    data = getMyListings(session['username'], False)
+    return render_template('profileListings.html', listings=data, category='mySold')
+
 
 @app.route('/profile/myPurchases')
 def myPurchases():
-    return render_template('profileListings.html', category='purchases')
+    data = getMyPurchased(session['username'])
+    return render_template('profileListings.html', listings=data, category='purchases')
 
 @app.route('/createListing', methods=['GET', 'POST'])
 def createListing():

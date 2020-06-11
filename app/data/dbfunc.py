@@ -90,7 +90,7 @@ def getListings(user):
         entry={}
         entry['title'] = arr[2]
         entry['vendor'] = getUserInfo(arr[1])[1]
-        entry['imagesrc'] = arr[6]
+        entry['imagesrc'] = 'static/images/' + arr[6]
         entry['location'] = getUserInfo(arr[1])[4]
         entry['price'] = arr[5]
         entry['type'] = arr[3]
@@ -103,15 +103,16 @@ def getMyListings(user,active):
     userID = getUserInfo(user)[0]
     result={}
     if active:
-        selected = c.execute('SELECT * FROM listings WHERE userID = {} and purchasedBy = -1;'.format(userID)).fetchall()[0]
+        selected = c.execute('SELECT * FROM listings WHERE userID = {} and purchasedBy = -1;'.format(userID)).fetchall()
     else:
         selected = c.execute('SELECT * FROM listings WHERE userID = {} and purchasedBy != -1;'.format(userID)).fetchall()
     for i in range(len(selected)):
         arr = selected[i]
+        print(arr)
         name = 'U{}L{}'.format(arr[1],arr[0])
         entry={}
         entry['title'] = arr[2]
-        entry['imagesrc'] = arr[6]
+        entry['imagesrc'] = 'static/images/' + arr[6]
         entry['price'] = arr[5]
         entry['type'] = arr[3]
         if not active:
@@ -131,7 +132,7 @@ def getMyPurchased(user):
         entry={}
         entry['title'] = arr[2]
         entry['vendor'] = getUserInfo(arr[1])[1]
-        entry['imagesrc'] = arr[6]
+        entry['imagesrc'] = 'static/images/' + arr[6]
         entry['location'] = getUserInfo(arr[1])[4]
         entry['price'] = arr[5]
         entry['type'] = arr[3]
