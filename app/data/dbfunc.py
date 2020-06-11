@@ -40,8 +40,10 @@ def newAccount(user,password,password1):
 def getUserInfo(user):
     db = sqlite3.connect(DB_FILE)
     c = db.cursor()
-    arr = c.execute('SELECT * FROM users WHERE username=\"{}\"'.format(user)).fetchall()
-    print(arr)
+    if isinstance(user, str):
+        arr = c.execute('SELECT * FROM users WHERE username=\"{}\";'.format(user)).fetchall()
+    else:
+        arr = c.execute('SELECT * FROM users WHERE id={};'.format(user)).fetchall()
     return arr[0]
 
     
@@ -53,7 +55,7 @@ def addListing(user,title,category,description,price,picture):
     userID = int(arr[0][0])
     querry = 'INSERT INTO listings(id, userID, itemName, itemCategory, itemDescription, price, picture, purchasedBy) ' \
              'VALUES({},{},\"{}\",\"{}\",\"{}\",{},\"{}\",{});'.format(getNextID(userID), userID, title, category,
-                                                                     description, price, picture, 0)
+                                                                     description, price, picture, -1)
     print(querry)
     c.execute(querry)
     db.commit()
@@ -76,3 +78,62 @@ def updateInfo(user,category,info):
     db.commit()
     return True
 
+def getListings(user):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    userID = getUserInfo(user)[0]
+    result={}
+    selected = c.execute('SELECT * FROM listings WHERE userID != {} AND purchasedBy = -1;'.format(userID)).fetchall()
+    for i in range(len(selected)):
+        arr = selected[i]
+        name = 'U{}L{}'.format(arr[1],arr[0])
+        entry={}
+        entry['title'] = arr[2]
+        entry['vendor'] = getUserInfo(arr[1])[1]
+        entry['imagesrc'] = arr[6]
+        entry['location'] = getUserInfo(arr[1])[4]
+        entry['price'] = arr[5]
+        entry['type'] = arr[3]
+        result[name] = entry
+    return result
+
+def getMyListings(user,active):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    userID = getUserInfo(user)[0]
+    result={}
+    if active:
+        selected = c.execute('SELECT * FROM listings WHERE userID = {} and purchasedBy = -1;'.format(userID)).fetchall()[0]
+    else:
+        selected = c.execute('SELECT * FROM listings WHERE userID = {} and purchasedBy != -1;'.format(userID)).fetchall()
+    for i in range(len(selected)):
+        arr = selected[i]
+        name = 'U{}L{}'.format(arr[1],arr[0])
+        entry={}
+        entry['title'] = arr[2]
+        entry['imagesrc'] = arr[6]
+        entry['price'] = arr[5]
+        entry['type'] = arr[3]
+        if not active:
+            entry['soldTo'] = getUserInfo(arr[7])[1]
+        result[name] = entry
+    return result
+
+def getMyPurchased(user):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    userID = getUserInfo(user)[0]
+    result = {}
+    selected = c.execute('SELECT * FROM listings WHERE purchasedBy = {};'.format(userID)).fetchall()
+    for i in range(len(selected)):
+        arr = selected[i]
+        name = 'U{}L{}'.format(arr[1],arr[0])
+        entry={}
+        entry['title'] = arr[2]
+        entry['vendor'] = getUserInfo(arr[1])[1]
+        entry['imagesrc'] = arr[6]
+        entry['location'] = getUserInfo(arr[1])[4]
+        entry['price'] = arr[5]
+        entry['type'] = arr[3]
+        result[name] = entry
+    return result
