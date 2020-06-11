@@ -11,7 +11,7 @@
     <br>
     <br>
 
-    <div id="contactForm" style="display: none">
+    <form id="contactForm" method="POST"  style="display: none">
         <div class="border"></div>
         <div class="row">
             <h3 class="mx-auto my-3"> Update Your Contact Info </h3>
@@ -19,17 +19,16 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Contact Info: </span>
                 </div>
-                <input name="contact" class="form-control" placeholder="Phone Number, Email, etc." aria-label="Price"
-                       aria-describedby="basic-addon1">
+                <input name="contact" class="form-control" placeholder="Phone Number, Email, etc.">
             </div>
         </div>
         <div class="row">
-            <button type="submit" class="btn btn-outline-primary w-25 mx-auto my-5 text-primary"> Confirm Location
+            <button type="submit" class="btn btn-outline-primary w-25 mx-auto my-5 text-primary"> Confirm Contact Info
             </button>
         </div>
-    </div>
+    </form>
 
-    <div id="locationForm" style="display: none">
+    <form id="locationForm" method="POST" style="display: none">
         <div class="border"></div>
         <div class="row">
             <h3 class="mx-auto my-3"> Update Your Location </h3>
@@ -38,8 +37,7 @@
                     <span class="input-group-text">Address or Area: </span>
                 </div>
                 <input name="location" id="pac-input" type="text" class="form-control"
-                       placeholder="If left empty, will assume current location" aria-label="Username"
-                       aria-describedby="basic-addon1">
+                       placeholder="If left empty, will assume current location">
             </div>
 
 
@@ -177,7 +175,7 @@
             <button type="submit" class="btn btn-outline-primary w-25 mx-auto my-5 text-primary"> Confirm Location
             </button>
         </div>
-    </div>
+    </form>
 
     <div class="border"></div>
 

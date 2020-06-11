@@ -82,11 +82,24 @@ def register():
         return render_template('base.html', success="Account Created")
 
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
-    arr = getUserInfo(session['username'])
-    print(arr)
-    return render_template('profile.html', userInfo=arr)
+    if request.method == 'GET':
+        arr = getUserInfo(session['username'])
+        print(arr)
+        return render_template('profile.html', userInfo=arr)
+    else:
+        arr = request.form
+        print(arr)
+        if 'contact' in arr:
+            message = 'Updated Contact Info'
+            updateInfo(session['username'], 'contactInfo', request.form['contact'])
+        elif 'location' in arr:
+            message = 'Updated Location'
+            updateInfo(session['username'], 'location', request.form['location'])
+        else:
+            message = 'wat'
+        return render_template('profile.html', userInfo=getUserInfo(session['username']), success=message)
 
 
 @app.route('/createListing', methods=['GET', 'POST'])

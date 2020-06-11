@@ -67,3 +67,12 @@ def getFileName(user):
     print(filename)
     return filename
 
+def updateInfo(user,category,info):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    query = 'UPDATE users SET {} = \"{}\" WHERE id={};'.format(category, info, getUserInfo(user)[0])
+    print(query)
+    c.execute(query)
+    db.commit()
+    return True
+
