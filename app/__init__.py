@@ -4,9 +4,11 @@ from app.data.dbfunc import *
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
-UPLOAD_FOLDER = os.getcwd() + "/app/static/images"
+UPLOAD_FOLDER = './app/static/images/'
+# UPLOAD_FOLDER = './static/images/'
 app.config['IMAGE_UPLOADS'] = UPLOAD_FOLDER
 DB_FILE = "data/database.db"
+
 
 @app.route('/')
 def hello_world():
@@ -14,18 +16,20 @@ def hello_world():
         return redirect(url_for('home'))
     return render_template('landing.html')
 
+
 @app.route('/home')
 def home():
-    if len(request.args)>0:
-        if request.args['mType']=='0':
+    if len(request.args) > 0:
+        if request.args['mType'] == '0':
             return render_template('home.html', alert="Username or Password incorrect")
-        elif request.args['mType']=='1':
+        elif request.args['mType'] == '1':
             return render_template('home.html', success="Logged In")
-        elif request.args['mType']=='2':
+        elif request.args['mType'] == '2':
             return render_template('home.html', success="Listing Added")
         else:
-            return render_template('landing.html', success= "Logged Out")
+            return render_template('landing.html', success="Logged Out")
     return render_template('home.html')
+
 
 @app.route('/another')
 def another():
@@ -36,7 +40,7 @@ def another():
 def login():
     if request.method == 'GET':
         if len(request.args) > 0:
-            if request.args['mType']=='0':
+            if request.args['mType'] == '0':
                 return render_template('login.html', alert="Username or Password incorrect")
             else:
                 return render_template('login.html', success="Account Created")
@@ -44,10 +48,11 @@ def login():
     else:
         eUser = request.form['username']
         ePass = request.form['password']
-        if (not authUser(eUser, ePass)):
+        if not authUser(eUser, ePass):
             return redirect(url_for('login', mType=0))
         session['username'] = eUser
         return redirect(url_for('home', mType=1))
+
 
 @app.route('/logOut')
 def logOut():
@@ -58,8 +63,8 @@ def logOut():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
-        if len(request.args)>0:
-            if request.args['mType']=='0':
+        if len(request.args) > 0:
+            if request.args['mType'] == '0':
                 return render_template('register.html', alert="Username in use")
             else:
                 return render_template('register.html', alert="Passwords do not match")
@@ -73,7 +78,6 @@ def register():
         if (message != "success"):
             return redirect(url_for('register', mType=message))
         return render_template('base.html', success="Account Created")
-
 
 
 @app.route('/profile')
@@ -90,17 +94,17 @@ def createListing():
     else:
         results = request.form
         print(results)
-        filename = ""
+        filename = getFileName(session['username'])
         if request.files:
             image = request.files["image"]
-            image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
-            filename = image.filename
-            print('')
-            print(image)
+            ext = image.filename.split('.')[-1]
+            print(ext)
+            filename += ("." + ext)
+            image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+        print(filename)
         addListing(session['username'], results['title'], results['category'], results['description'], results['price'],
                    filename)
         return redirect(url_for('home', mType=2))
-
 
 
 if __name__ == "__main__":

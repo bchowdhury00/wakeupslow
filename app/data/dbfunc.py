@@ -58,3 +58,12 @@ def addListing(user,title,category,description,price,picture):
     c.execute(querry)
     db.commit()
     return "success"
+
+def getFileName(user):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    userID = getUserInfo(user)[0]
+    filename = "U{}L{}".format(userID, getNextID(userID))
+    print(filename)
+    return filename
+
