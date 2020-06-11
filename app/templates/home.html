@@ -11,6 +11,17 @@
     height: 600px;
   }
 </style>
+
+<div class="row mb-3">
+  <div class="input-group mt-5 mx-5">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Address or Area: </span>
+    </div>
+    <input name="location" id="pac-input" type="text" class="form-control" placeholder="If left empty, will assume current location" aria-label="Username" aria-describedby="basic-addon1">
+  </div>
+</div>
+<br>
+<div class="border"></div>
 <div class="row">
   <div class="col-4">
     <div class="list">
@@ -19,7 +30,7 @@
         <div class="card mx-2 my-3" style="height:130px">
           <div class="row h-100 w-100">
             <div class="col-4">
-              <image class="image w-100 h-100" src="{{listings[listing]['imagesrc']}}" </image>
+              <image class="image w-100 h-75 my-2 mx-2" src="{{listings[listing]['imagesrc']}}" </image>
             </div>
             <div class="col-8">
               <div class="card-title">
@@ -59,10 +70,11 @@
   // prompted by your browser. If you see the error "The Geolocation service
   // failed.", it means you probably did not give permission for the browser to
   // locate you.
-  var map, infoWindow;
+  var map, infoWindow, geocoder;
 
-  function initMap() {
+  function initAutocomplete() {
     geocoder = new google.maps.Geocoder();
+
     map = new google.maps.Map(document.getElementById('map'), {
       center: {
         lat: -34.397,
@@ -71,15 +83,7 @@
       zoom: 12
     });
     infoWindow = new google.maps.InfoWindow;
-    var i;
-    console.log(listings.length);
-    for (i = 0; i < 10; i++) {
-      console.log(i);
-      if (listings[i]){
-        codeAddress(listings[i]['location']);
-      }
-    };
-  //  codeAddress(listings[0]['location']);
+
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
@@ -99,7 +103,77 @@
       // Browser doesn't support Geolocation
       handleLocationError(false, infoWindow, map.getCenter());
     }
+
+
+    var i;
+    console.log(listings.length);
+    for (i = 0; i < 10; i++) {
+      console.log(i);
+      if (listings[i]) {
+        codeAddress(listings[i]['location']);
+      }
+    };
+
+    // Create the search box and link it to the UI element.
+    var input = document.getElementById('pac-input');
+    var searchBox = new google.maps.places.SearchBox(input);
+
+
+    // Bias the SearchBox results towards current map's viewport.
+    map.addListener('bounds_changed', function() {
+      searchBox.setBounds(map.getBounds());
+    });
+
+    var markers = [];
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    searchBox.addListener('places_changed', function() {
+      var places = searchBox.getPlaces();
+
+      if (places.length == 0) {
+        return;
+      }
+
+      // Clear out the old markers.
+      markers.forEach(function(marker) {
+        marker.setMap(null);
+      });
+      markers = [];
+
+      // For each place, get the icon, name and location.
+      var bounds = new google.maps.LatLngBounds();
+      places.forEach(function(place) {
+        if (!place.geometry) {
+          console.log("Returned place contains no geometry");
+          return;
+        }
+        var icon = {
+          url: place.icon,
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(25, 25)
+        };
+
+        // Create a marker for each place.
+        markers.push(new google.maps.Marker({
+          map: map,
+          icon: icon,
+          title: place.name,
+          position: place.geometry.location
+        }));
+
+        if (place.geometry.viewport) {
+          // Only geocodes have viewport.
+          bounds.union(place.geometry.viewport);
+        } else {
+          bounds.extend(place.geometry.location);
+        }
+      });
+      map.fitBounds(bounds);
+    });
   }
+
   console.log(listings);
 
   function codeAddress(address) {
@@ -130,7 +204,8 @@
   }
 </script>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEKSn9NsDrTue2ODvnY8WeQOnDHT5yxQg&callback=initMap">
-</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEKSn9NsDrTue2ODvnY8WeQOnDHT5yxQg&libraries=places&callback=initAutocomplete"
+        async defer></script>
 
 {% endblock %}
