@@ -47,6 +47,6 @@ function confirmLocation() {
       var alert = document.getElementById("alertSuccess");
       alert.innerHTML = data.message;
       alert.style = "height:100px";
-      console.log(data);
+      console.log(alert);
     })
 }
