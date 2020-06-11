@@ -1,10 +1,17 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
-import os
+import os, platform
 from data.dbfunc import *
+
+
+UPLOAD_FOLDER = ""
+
+if (platform.system() == "Windows"):
+    UPLOAD_FOLDER = os.getcwd() + "\\app\\static\\images"
+elif (platform.system() == "Darwin" or platform.system() == "Linux"):
+        UPLOAD_FOLDER = './app/static/images/'
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
-UPLOAD_FOLDER = './app/static/images/'
 # UPLOAD_FOLDER = './static/images/'
 app.config['IMAGE_UPLOADS'] = UPLOAD_FOLDER
 DB_FILE = "data/database.db"
