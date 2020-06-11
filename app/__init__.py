@@ -19,7 +19,6 @@ DB_FILE = "data/database.db"
 
 @app.route('/')
 def hello_world():
-    print(getConvo2('c','cchan'))
     if 'username' in session:
         return redirect(url_for('home'))
     return render_template('landing.html')
@@ -97,22 +96,24 @@ def profile():
         print(arr)
         return render_template('profileInfo.html', userInfo=arr)
     else:
-        if request.method == "POST":
+        if request.get_json():
             newlocation = request.get_json()
             print(newlocation)
-            res = {"redirect": "/profile"}
+            message = 'Updated Location'
+            #res = {"redirect": "/profile"}
             # updateInfo(session['username'], 'location', newlocations)
-            return res
-        arr = request.form
-        print(arr)
-        if 'contact' in arr:
-            message = 'Updated Contact Info'
-            updateInfo(session['username'], 'contactInfo', request.form['contact'])
+            #return res
+        else:
+            arr = request.form
+            print(arr)
+            if 'contact' in arr:
+                message = 'Updated Contact Info'
+                updateInfo(session['username'], 'contactInfo', request.form['contact'])
         # elif 'location' in arr:
         #     message = 'Updated Location'
         #     updateInfo(session['username'], 'location', request.form['location'])
-        else:
-            message = 'wat'
+            else:
+                message = 'wat'
         return render_template('profileInfo.html', userInfo=getUserInfo(session['username']), success=message)
 
 @app.route('/profile/myListings/active')

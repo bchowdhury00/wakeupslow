@@ -160,8 +160,6 @@ def getConvo(fromUser, toUser):
     result['toMessages'] = packageMessages(toArr)
 
     json_object = json.dumps(result,indent = 4)
-    with open('data/jsonTest.json','w') as outfile:
-        outfile.write(json_object)
 
     return result
 
@@ -192,8 +190,7 @@ def getConvo2(fromUser, toUser):
     result['messages'] = packageMessages2(arr,usernames)
 
     json_object = json.dumps(result, indent=4)
-    with open('data/jsonTest2.json', 'w') as outfile:
-        outfile.write(json_object)
+
 
     return result
 
