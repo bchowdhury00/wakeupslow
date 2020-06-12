@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os, platform
-from data.dbfunc import *
+from app.data.dbfunc import *
 
 
 UPLOAD_FOLDER = ""
@@ -42,7 +42,6 @@ def home():
 @app.route('/listings/<listingID>')
 def viewListing(listingID):
     arr = listingID[1:].split('L')
-    print(arr)
     return render_template("viewListing.html", listing = getListing(int(arr[0]), int(arr[1])))
 
 

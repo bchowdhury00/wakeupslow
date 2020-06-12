@@ -87,15 +87,15 @@ def getListings(user):
     selected = c.execute('SELECT * FROM listings WHERE userID != {} AND purchasedBy = -1;'.format(userID)).fetchall()
     for i in range(len(selected)):
         arr = selected[i]
-        name = 'U{}L{}'.format(arr[1],arr[0])
         entry={}
+        entry['listingID'] = 'U{}L{}'.format(arr[1],arr[0])
         entry['title'] = arr[2]
         entry['vendor'] = getUserInfo(arr[1])[1]
         entry['imagesrc'] = 'static/images/' + arr[6]
         entry['location'] = getUserInfo(arr[1])[4]
         entry['price'] = arr[5]
         entry['type'] = arr[3]
-        result[name] = entry
+        result[i] = entry
     return result
 
 def getListing(userID, listingID):
@@ -126,15 +126,15 @@ def getMyListings(user,active):
     for i in range(len(selected)):
         arr = selected[i]
         print(arr)
-        name = 'U{}L{}'.format(arr[1],arr[0])
         entry={}
+        entry['listingID'] = 'U{}L{}'.format(arr[1],arr[0])
         entry['title'] = arr[2]
         entry['imagesrc'] = 'static/images/' + arr[6]
         entry['price'] = arr[5]
         entry['type'] = arr[3]
         if not active:
             entry['soldTo'] = getUserInfo(arr[7])[1]
-        result[name] = entry
+        result[i] = entry
     return result
 
 def getMyPurchased(user):
@@ -145,15 +145,15 @@ def getMyPurchased(user):
     selected = c.execute('SELECT * FROM listings WHERE purchasedBy = {};'.format(userID)).fetchall()
     for i in range(len(selected)):
         arr = selected[i]
-        name = 'U{}L{}'.format(arr[1],arr[0])
         entry={}
+        entry['listingID'] = 'U{}L{}'.format(arr[1],arr[0])
         entry['title'] = arr[2]
         entry['vendor'] = getUserInfo(arr[1])[1]
         entry['imagesrc'] = 'static/images/' + arr[6]
         entry['location'] = getUserInfo(arr[1])[4]
         entry['price'] = arr[5]
         entry['type'] = arr[3]
-        result[name] = entry
+        result[i] = entry
     return result
 
 #SELECT * FROM messages WHERE (fromUser = 0 AND toUser = 2) OR (fromUser = 2 and toUser = 0);
