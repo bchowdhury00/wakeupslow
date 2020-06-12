@@ -34,27 +34,27 @@
 
 
 
-<div class="card mx-2 my-3" style="height:200px">
-    <div class="row">
-      <div class="col" style="overflow-y:scroll; height:130px">
-        <div class="media-body order-2 order-lg-1">
-          <h5 class="mt-1 font-weight-bold mb-2">{{listings[listing]['title']}}</h5>
-          <p class="font-italic text-muted mb-0 small">Vendor : {{listings[listing]['vendor']}}</p>
-          <p class="font-italic text-muted mb-0 small">Category : {{listings[listing]['type']}}</p>
-          <p class="font-italic text-muted mb-0 small">Location : {{listings[listing]['location']}}</p>
-          <div class="d-flex align-items-center justify-content-between mt-1">
-            <h6 class="font-weight-bold my-2 mx-auto" style="font-size:.9rem">Price : {{listings[listing]['price']}}</h6>
+        <div class="card mx-2 my-3" style="height:200px">
+          <div class="row">
+            <div class="col" style="overflow-y:scroll; height:130px">
+              <div class="media-body order-2 order-lg-1">
+                <h5 class="mt-1 font-weight-bold mb-2">{{listings[listing]['title']}}</h5>
+                <p class="font-italic text-muted mb-0 small">Vendor : {{listings[listing]['vendor']}}</p>
+                <p class="font-italic text-muted mb-0 small">Category : {{listings[listing]['type']}}</p>
+                <p class="font-italic text-muted mb-0 small">Location : {{listings[listing]['location']}}</p>
+                <div class="d-flex align-items-center justify-content-between mt-1">
+                  <h6 class="font-weight-bold my-2 mx-auto" style="font-size:.9rem">Price : {{listings[listing]['price']}}</h6>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <img src="{{listings[listing]['imagesrc']}}" alt="Generic placeholder image" class="mx-auto mt-4 mb-2 rounded w-75">
+            </div>
           </div>
-        </div>
-        </div>
-        <div class="col">
-        <img src="{{listings[listing]['imagesrc']}}"alt="Generic placeholder image" class="mx-auto mt-4 mb-2 rounded w-75">
-        </div>
-</div>
-        <div class="row  my-2">
-          <a class="btn btn-outline-success ml-5 mr-5 text-success">Message Vendor</a>
-          <a class="btn btn-outline-primary mr-5 ml-5 text-primary" href="/listings/{{ listings[listing]['listingID'] }}"> View Listing</a>
-        </div>
+          <div class="row  my-2">
+            <a class="btn btn-outline-success ml-5 mr-5 text-success">Message Vendor</a>
+            <a class="btn btn-outline-primary mr-5 ml-5 text-primary" href="/listings/{{ listings[listing]['listingID'] }}"> View Listing</a>
+          </div>
 
 
           <!-- <div class="row h-75 w-100">
@@ -95,11 +95,7 @@
 
 </div>
 <script>
-  var listings = {
-    {
-      listings | safe
-    }
-  };
+  var listings = {{listings | safe}};
 
   // Note: This example requires that you consent to location sharing when
   // prompted by your browser. If you see the error "The Geolocation service
