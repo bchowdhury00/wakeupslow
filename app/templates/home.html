@@ -205,11 +205,10 @@
   }
 
   //console.log(listings);
-
-async function codeAddress(address) {
-    var returnVal = await geocoder.geocode({
+function codeAddress(address) {
+    var returnVal = geocoder.geocode({
       'address': address
-    }, async function(results, status) {
+    },function(results, status) {
       if (status == 'OK') {
         map.setCenter(results[0].geometry.location);
         // var marker = new google.maps.Marker({
@@ -224,8 +223,6 @@ async function codeAddress(address) {
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
       }
-    }).then(function(endresult){
-      console.log(endresult)
     });
     console.log(returnVal);
     return returnVal;
