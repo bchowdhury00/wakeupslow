@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os, platform
-from app.data.dbfunc import *
+from data.dbfunc import *
 
 
 UPLOAD_FOLDER = ""

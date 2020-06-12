@@ -47,7 +47,7 @@ def getUserInfo(user):
         arr = c.execute('SELECT * FROM users WHERE id={};'.format(user)).fetchall()
     return arr[0]
 
-    
+
 def addListing(user,title,category,description,price,picture):
     db = sqlite3.connect(DB_FILE)
     c = db.cursor()
@@ -92,7 +92,10 @@ def getListings(user):
         entry['title'] = arr[2]
         entry['vendor'] = getUserInfo(arr[1])[1]
         entry['imagesrc'] = 'static/images/' + arr[6]
-        entry['location'] = getUserInfo(arr[1])[4]
+        if (getUserInfo(arr[1])[4] == None):
+            entry['location'] = "None"
+        else:
+            entry['location'] = getUserInfo(arr[1])[4]
         entry['price'] = arr[5]
         entry['type'] = arr[3]
         result[i] = entry
