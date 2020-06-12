@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os, platform
-from app.data.dbfunc import *
+from data.dbfunc import *
 
 
 UPLOAD_FOLDER = ""
@@ -19,6 +19,7 @@ DB_FILE = "data/database.db"
 
 @app.route('/')
 def hello_world():
+    print(getListings('c'))
     if 'username' in session:
         return redirect(url_for('home'))
     return render_template('landing.html')
