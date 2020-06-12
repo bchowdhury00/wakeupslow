@@ -19,7 +19,6 @@ DB_FILE = "data/database.db"
 
 @app.route('/')
 def hello_world():
-    print(getListings('c'))
     if 'username' in session:
         return redirect(url_for('home'))
     return render_template('landing.html')
@@ -29,14 +28,16 @@ def hello_world():
 def home():
     if len(request.args) > 0:
         if request.args['mType'] == '0':
-            return render_template('home.html', alert="Username or Password incorrect")
+            return render_template('home.html', alert="?")
         elif request.args['mType'] == '1':
-            return render_template('home.html', success="Logged In")
+            return render_template('home.html', listings=getListings(session['username']), success="Logged In")
         elif request.args['mType'] == '2':
-            return render_template('home.html', success="Listing Added")
+            return render_template('home.html', listings=getListings(session['username']), success="Listing Added")
         else:
             return render_template('landing.html', success="Logged Out")
-    return render_template('home.html')
+    if 'username' not in session:
+        return redirect('/')
+    return render_template('home.html', listings=getListings(session['username']))
 
 @app.route('/listings/<listingID>')
 def viewListing(listingID):

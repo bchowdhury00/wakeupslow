@@ -109,6 +109,8 @@ def getListing(userID, listingID):
     entry['location'] = getUserInfo(arr[1])[4]
     entry['price'] = arr[5]
     entry['type'] = arr[3]
+    if arr[7] != -1:
+        entry['purchasedBy'] = getUserInfo(arr[7])[1]
     print(entry)
     return entry
 
