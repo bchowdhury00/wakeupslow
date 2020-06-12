@@ -46,12 +46,21 @@ def hello_world():
             "title": "title1",
             "vendor": "username",
             "imagesrc": "static/images/index.png",
-            "location": "Manhattan NY",
+            "location": "Queens NY",
+            "price": "00.00",
+            "type": "Lacrosse"
+        },
+        3: {
+            "title": "title1",
+            "vendor": "username",
+            "imagesrc": "static/images/index.png",
+            "location": "Brooklyn NY",
             "price": "00.00",
             "type": "Lacrosse"
         }
     }
     return render_template('home.html', listings=listings)
+
 
 @app.route("/viewListing")
 def viewListing():
@@ -64,7 +73,7 @@ def viewListing():
         "type": "Football",
         "description": "description"
     }
-    return render_template("viewListing.html", listing = listing)
+    return render_template("viewListing.html", listing=listing)
 
 
 @app.route('/another')

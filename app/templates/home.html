@@ -72,7 +72,7 @@
   // prompted by your browser. If you see the error "The Geolocation service
   // failed.", it means you probably did not give permission for the browser to
   // locate you.
-
+  var promised = [];
   var map, infoWindow, geocoder;
   var realMarkerPositions;
 
@@ -129,13 +129,26 @@
 
     realMarkerPositions = getMarkerPositions(geocoder);
 
-    Promise.all(realMarkerPositions)
+    Promise.all(promised)
       .then(function(returnVals) {
         // you should have return values here when
         // all promises have rsolved
-        console.log(returnVals);
         realMarkerPositions.length = Object.keys(listings).length;
-        //console.log(markerPositions);
+        console.log(returnVals);
+      //  console.log(realMarkerPositions);
+        var mP = 0;
+        var  resultCounter=0;
+        for (mP; mP < realMarkerPositions.length; mP++){
+          if (typeof(realMarkerPositions[mP]['lat'])=="undefined"){
+            realMarkerPositions[mP] = {
+                "lat" : returnVals[resultCounter][0],
+                "lng" : returnVals[resultCounter][1]
+            };
+            // console.log('ran');
+            resultCounter++;
+          }
+        }
+        console.log(realMarkerPositions);
         backupMarkerPositions = realMarkerPositions;
         sortDistances(realMarkerPositions, {
           "lat": 40.605903,
@@ -295,10 +308,13 @@
       } else if (listings[i]['location'][0] != "{") {
         // console.log(codeAddress(listings[i]['location']));
         // markerPositions[i] = codeAddress(listings[i]['location']);
+        var newPromise = findLatLang(listings[i]['location'], i, geocoder);
         markerPositions[i] = {
-          "lat": findLatLang(listings[i]['location'], i, geocoder)[0],
-          "lng": findLatLang(listings[i]['location'], i, geocoder)[1]
+          "lat": newPromise[0],
+          "lng": newPromise[1]
         };
+        promised.push(newPromise);
+
         //  console.log(markerPositions[i]);
       } else {
         var j;
@@ -334,5 +350,5 @@
 </script>
 
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{key}}&libraries=places&callback=initAutocomplete" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEKSn9NsDrTue2ODvnY8WeQOnDHT5yxQg&libraries=places&callback=initAutocomplete" async defer></script>
 {% endblock %}
