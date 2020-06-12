@@ -78,25 +78,25 @@
 
   function initAutocomplete() {
 
-    var geocoder = geocoder = new google.maps.Geocoder();
+    geocoder = geocoder = new google.maps.Geocoder();
 
-    realMarkerPositions = getMarkerPositions(geocoder);
-
-    Promise.all(realMarkerPositions)
-      .then(function(returnVals) {
-        // you should have return values here when
-        // all promises have rsolved
-        console.log(returnVals);
-        realMarkerPositions.length = Object.keys(listings).length;
-        //console.log(markerPositions);
-        backupMarkerPositions = realMarkerPositions;
-        sortDistances(realMarkerPositions, {
-          "lat": 40.605903,
-          "lng": -73.956795
-        });
-      });
-
-    console.log(realMarkerPositions);
+    // realMarkerPositions = getMarkerPositions(geocoder);
+    //
+    // Promise.all(realMarkerPositions)
+    //   .then(function(returnVals) {
+    //     // you should have return values here when
+    //     // all promises have rsolved
+    //     console.log(returnVals);
+    //     realMarkerPositions.length = Object.keys(listings).length;
+    //     //console.log(markerPositions);
+    //     backupMarkerPositions = realMarkerPositions;
+    //     sortDistances(realMarkerPositions, {
+    //       "lat": 40.605903,
+    //       "lng": -73.956795
+    //     });
+    //   });
+    //
+    // console.log(realMarkerPositions);
     map = new google.maps.Map(document.getElementById('map'), {
       center: {
         lat: -8.783195,
@@ -127,31 +127,23 @@
     }
 
 
-    // realMarkerPositions = getMarkerPositions();
-    //
-    //
-    // Promise.all(realMarkerPositions)
-    //   .then(function(returnVals) {
-    //     // you should have return values here when
-    //     // all promises have rsolved
-    //     console.log(returnVals);
-    //     realMarkerPositions.length = Object.keys(listings).length;
-    //     //console.log(markerPositions);
-    //     backupMarkerPositions = realMarkerPositions;
-    //     sortDistances(realMarkerPositions, {
-    //       "lat": 40.605903,
-    //       "lng": -73.956795
-    //     });
-    //   })
+    realMarkerPositions = getMarkerPositions(geocoder);
 
+    Promise.all(realMarkerPositions)
+      .then(function(returnVals) {
+        // you should have return values here when
+        // all promises have rsolved
+        console.log(returnVals);
+        realMarkerPositions.length = Object.keys(listings).length;
+        //console.log(markerPositions);
+        backupMarkerPositions = realMarkerPositions;
+        sortDistances(realMarkerPositions, {
+          "lat": 40.605903,
+          "lng": -73.956795
+        });
+      });
 
-    // markerPositions.length = Object.keys(listings).length;
-    // //console.log(markerPositions);
-    // backupMarkerPositions = markerPositions;
-    // sortDistances(markerPositions, {
-    //   "lat": 40.605903,
-    //   "lng": -73.956795
-    // });
+    console.log(realMarkerPositions);
     // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
@@ -260,6 +252,9 @@
     }, callback);
   }
 
+
+
+
   function callback(response, status) {
     // See Parsing the Results for
     // the basics of a callback function.
@@ -339,6 +334,5 @@
 </script>
 
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{key}}&libraries=places&callback=initAutocomplete" async defer></script>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEKSn9NsDrTue2ODvnY8WeQOnDHT5yxQg&libraries=places&callback=initAutocomplete" async defer></script>
 {% endblock %}
