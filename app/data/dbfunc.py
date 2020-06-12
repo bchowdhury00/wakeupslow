@@ -98,6 +98,20 @@ def getListings(user):
         result[name] = entry
     return result
 
+def getListing(userID, listingID):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    arr=c.execute('SELECT * FROM listings WHERE userID={} AND id={};'.format(userID, listingID)).fetchall()[0]
+    entry = {}
+    entry['title'] = arr[2]
+    entry['vendor'] = getUserInfo(arr[1])[1]
+    entry['imagesrc'] = 'static/images/' + arr[6]
+    entry['location'] = getUserInfo(arr[1])[4]
+    entry['price'] = arr[5]
+    entry['type'] = arr[3]
+    print(entry)
+    return entry
+
 def getMyListings(user,active):
     db = sqlite3.connect(DB_FILE)
     c = db.cursor()

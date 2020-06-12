@@ -23,7 +23,11 @@
   <p> Category:  {{listing['type']}} </p>
   </div>
 </div>
-<button class="btn btn-outline-success my-3"> Message Vendor </button>
+{% if 'username' in session %}
+    {% if listings['vendor'] != session['username'] %}
+        <button class="btn btn-outline-success my-3"> Message Vendor </button>
+    {% endif %}
+{% endif %}
 </div>
 <div class="border"></div>
 <div class="col my-auto mx-auto">

@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os, platform
-from data.dbfunc import *
+from app.data.dbfunc import *
 
 
 UPLOAD_FOLDER = ""
@@ -37,12 +37,19 @@ def home():
             return render_template('landing.html', success="Logged Out")
     return render_template('home.html')
 
+@app.route('/listings/<listingID>')
+def viewListing(listingID):
+    arr = listingID[1:].split('L')
+    print(arr)
+    return render_template("viewListing.html", listing = getListing(int(arr[0]), int(arr[1])))
+
 
 @app.route('/another')
 def another():
     return render_template('maptest.html')
 
 
+#################ACCOUNTS####################
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
@@ -89,6 +96,7 @@ def register():
         return render_template('base.html', success="Account Created")
 
 
+#################PROFILES####################
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if request.method == 'GET':
