@@ -3,7 +3,22 @@
 
 
 {% block body %}
-
+<div class="card-header">
+  <ul class="nav nav-pills card-header-pills">
+    <li class="nav-item">
+      <a class="nav-link" href="#">Category1</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Category2</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Category3</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+    </li>
+  </ul>
+</div>
 <style>
   /* Always set the map height explicitly to define the size of the div
      * element that contains the map. */
@@ -94,102 +109,69 @@
     realCurrentLocation = findCurrentLocationGoog();
 
     realCurrentLocation.then(function(result) {
-    //  console.log(result);
-      realCurrentLocation = result;
-      realMarkerPositions = getMarkerPositions(geocoder);
+      //console.log(result);
+      if (result['lat'] != 0) {
+        realCurrentLocation = result;
+        realMarkerPositions = getMarkerPositions(geocoder);
 
-      Promise.all(promised)
-        .then(function(returnVals) {
-          // you should have return values here when
-          // all promises have rsolved
-          realMarkerPositions.length = Object.keys(listings).length;
-          //console.log(returnVals);
-          //  console.log(realMarkerPositions);
-          var mP = 0;
-          var resultCounter = 0;
-          for (mP; mP < realMarkerPositions.length; mP++) {
-            if (typeof(realMarkerPositions[mP]['lat']) == "undefined") {
-              realMarkerPositions[mP] = {
-                "lat": returnVals[resultCounter][0],
-                "lng": returnVals[resultCounter][1]
-              };
-              // console.log('ran');
-              resultCounter++;
+        Promise.all(promised)
+          .then(function(returnVals) {
+            // you should have return values here when
+            // all promises have rsolved
+            realMarkerPositions.length = Object.keys(listings).length;
+            //console.log(returnVals);
+            //  console.log(realMarkerPositions);
+            var mP = 0;
+            var resultCounter = 0;
+            for (mP; mP < realMarkerPositions.length; mP++) {
+              if (typeof(realMarkerPositions[mP]['lat']) == "undefined") {
+                realMarkerPositions[mP] = {
+                  "lat": returnVals[resultCounter][0],
+                  "lng": returnVals[resultCounter][1]
+                };
+                // console.log('ran');
+                resultCounter++;
+              }
             }
-          }
-        //  console.log(realMarkerPositions);
-          backupMarkerPositions = realMarkerPositions;
-          //console.log(realCurrentLocation);
-          console.log(listings);
-          var pertinentPromise = sortDistances(realMarkerPositions, realCurrentLocation);
-          pertinentPromise.then(function(newReturnVals){
-            listings = newReturnVals[0];
-            realMarkerPositions = newReturnVals[1];
-            console.log(newReturnVals);
-            updatedListingsDisplay();
+            //  console.log(realMarkerPositions);
+            backupMarkerPositions = realMarkerPositions;
+            //console.log(realCurrentLocation);
+          //  console.log(listings);
+            var pertinentPromise = sortDistances(realMarkerPositions, realCurrentLocation);
+            pertinentPromise.then(function(newReturnVals) {
+              listings = newReturnVals[0];
+              realMarkerPositions = newReturnVals[1];
+              //console.log(newReturnVals);
+              updatedListingsDisplay();
+              setUpSearchBox(realMarkerPositions);
+            });
           });
-        });
-
-    });
-
-    //console.log(realMarkerPositions);
-    // Create the search box and link it to the UI element.
-    var input = document.getElementById('pac-input');
-    var searchBox = new google.maps.places.SearchBox(input);
-
-
-    // Bias the SearchBox results towards current map's viewport.
-    map.addListener('bounds_changed', function() {
-      searchBox.setBounds(map.getBounds());
-    });
-
-    var markers = [];
-    // Listen for the event fired when the user selects a prediction and retrieve
-    // more details for that place.
-    searchBox.addListener('places_changed', function() {
-      var places = searchBox.getPlaces();
-
-      if (places.length == 0) {
-        return;
+      } else {
+        realMarkerPositions = getMarkerPositions(geocoder);
+        Promise.all(promised)
+          .then(function(returnVals) {
+            // you should have return values here when
+            // all promises have rsolved
+            realMarkerPositions.length = Object.keys(listings).length;
+            //console.log(returnVals);
+            //  console.log(realMarkerPositions);
+            var mP = 0;
+            var resultCounter = 0;
+            for (mP; mP < realMarkerPositions.length; mP++) {
+              if (typeof(realMarkerPositions[mP]['lat']) == "undefined") {
+                realMarkerPositions[mP] = {
+                  "lat": returnVals[resultCounter][0],
+                  "lng": returnVals[resultCounter][1]
+                };
+                // console.log('ran');
+                resultCounter++;
+              }
+            }
+            //  console.log(realMarkerPositions);
+            backupMarkerPositions = realMarkerPositions;
+            setUpSearchBox(realMarkerPositions);
+          });
       }
-
-      // Clear out the old markers.
-      markers.forEach(function(marker) {
-        marker.setMap(null);
-      });
-      markers = [];
-
-      // For each place, get the icon, name and location.
-      var bounds = new google.maps.LatLngBounds();
-      places.forEach(function(place) {
-        if (!place.geometry) {
-          console.log("Returned place contains no geometry");
-          return;
-        }
-        var icon = {
-          url: place.icon,
-          size: new google.maps.Size(71, 71),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(17, 34),
-          scaledSize: new google.maps.Size(25, 25)
-        };
-
-        // Create a marker for each place.
-        markers.push(new google.maps.Marker({
-          map: map,
-          icon: icon,
-          title: place.name,
-          position: place.geometry.location
-        }));
-
-        if (place.geometry.viewport) {
-          // Only geocodes have viewport.
-          bounds.union(place.geometry.viewport);
-        } else {
-          bounds.extend(place.geometry.location);
-        }
-      });
-      map.fitBounds(bounds);
     });
   }
 
