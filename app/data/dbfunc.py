@@ -1,7 +1,7 @@
 import sqlite3
 import json
 
-DB_FILE = "app/data/database.db"
+DB_FILE = "data/database.db"
 
 def getNextID(type):
     db = sqlite3.connect(DB_FILE)
@@ -206,3 +206,9 @@ def getOpenConvos(user):
         if elem[0] not in result:
             result.append(elem[0])
     return result
+
+def addMessage(fromUser,toUser,timestamp,content):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    #querry = 'INSERT INTO messages(fromUser integer, toUser integer, content text, tStamp text) VALUES({},{},{},{});'.format(fromUser, toUser, content, timeStamp,)
+    return

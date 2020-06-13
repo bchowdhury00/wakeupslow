@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os, platform
+from flask_socketio import SocketIO
 from data.dbfunc import *
 
 
@@ -8,13 +9,14 @@ UPLOAD_FOLDER = ""
 if (platform.system() == "Windows"):
     UPLOAD_FOLDER = os.getcwd() + "\\app\\static\\images"
 elif (platform.system() == "Darwin" or platform.system() == "Linux"):
-        UPLOAD_FOLDER = './app/static/images/'
+        UPLOAD_FOLDER = 'static/images/'
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 # UPLOAD_FOLDER = './static/images/'
 app.config['IMAGE_UPLOADS'] = UPLOAD_FOLDER
 DB_FILE = "data/database.db"
+socketio = SocketIO(app)
 
 
 @app.route('/')
@@ -164,10 +166,13 @@ def createListing():
         return redirect(url_for('home', mType=2))
 
 
-@app.route('/messages/<username>')
-def idk(username):
-    arr=getOpenConvos(username)
-    return str(arr)
+@app.route('/messages')
+def idk():
+    if 'username' not in session:
+        return redirect(url_for('login', mType=2))
+    arr = getOpenConvos(session['username'])
+    print(arr)
+    return render_template("mymessages.html")
 
 
 @app.route('/messages/<username>/<convoID>')
@@ -177,7 +182,14 @@ def viewMessages(username,convoID):
     ob=getConvo(username,getUserInfo(int(arr[1]))[1])
     return ob
 
+def messageReceived(methods=['GET', 'POST']):
+    print('message was received!!!')
+
+@socketio.on('my event')
+def handle_my_custom_event(json, methods=['GET', 'POST']):
+    print('received my event: ' + str(json))
+    socketio.emit('my response', json, callback=messageReceived)
 
 if __name__ == "__main__":
     app.debug = True
-    app.run()
+    socketio.run(app)
