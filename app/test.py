@@ -28,7 +28,7 @@ def hello_world():
             "listingID" : "1"
         },
         1: {
-            "title": "title1",
+            "title": "title2",
             "vendor": "username",
             "imagesrc": "static/images/index.png",
             "location": "NY",
@@ -37,7 +37,7 @@ def hello_world():
             "listingID" : "2"
         },
         2: {
-            "title": "title1",
+            "title": "title3",
             "vendor": "username",
             "imagesrc": "static/images/index.png",
             "location": "Manhattan NY",
@@ -46,7 +46,7 @@ def hello_world():
             "listingID" : "3"
         },
         3: {
-            "title": "title1",
+            "title": "title4",
             "vendor": "username",
             "imagesrc": "static/images/index.png",
             "location": "Queens NY",
@@ -55,7 +55,7 @@ def hello_world():
             "listingID" : "4"
         },
         4: {
-            "title": "title1",
+            "title": "title5",
             "vendor": "username",
             "imagesrc": "static/images/index.png",
             "location": "Brooklyn NY",
