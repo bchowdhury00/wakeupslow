@@ -1,21 +1,23 @@
 function updatedListingsDisplay(){
+  console.log(listings);
   var list = document.getElementById('listingList').children;
   var sortedList = [];
-  sortedList.className = "list";
+  //sortedList.className = "list";
   //console.log(list);
   var listingCounter = 0;
   var listCounter = 0;
   for (listingCounter = 0; listingCounter < Object.keys(listings).length; listingCounter++){
     for (listCounter = 0; listCounter < list.length; listCounter++){
-    //  console.log(listings[listingCounter]['listingID']);
-      //console.log(list[listCounter].id);
+    // console.log(listings[listingCounter]['listingID']);
+    //  console.log(list[listCounter].id);
       if (listings[listingCounter]['listingID'] == list[listCounter].id){
-        sortedList[listCounter] = list[listingCounter];
-        //console.log("ran");
+        sortedList[listingCounter] = list[listCounter];
+      //  console.log("ran");
+        //  console.log(listCounter);
       }
     }
   }
-//  console.log(sortedList);
+  console.log(sortedList);
   var realList = document.getElementById('listingList')
   realList.innerHTML = '';
   for (listCounter = 0; listCounter < sortedList.length; listCounter++){
@@ -88,7 +90,7 @@ function updatedListingsDisplay(){
       for (counter; counter < data.length; counter++) {
         if (data[counter].status != "ZERO_RESULTS") {
           var distance = data[counter].distance.text;
-          console.log(distance);
+          //console.log(distance);
           if (distance[distance.length-2] == "k"){
             distances.push(parseFloat(distance.slice(0, distance.length - 3)));
           } else {
@@ -101,24 +103,37 @@ function updatedListingsDisplay(){
       distancesToSort.sort(function(a, b) {
         return a - b
       });
-      //  console.log(distances);
-    //    console.log(distancesToSort);
+      //console.log(distances);
+      // console.log(distancesToSort);
       //var sortedData = [];
       var sortedMarkerPositions = [];
       var distanceCounter = 0;
       for (counter = 0; counter < distances.length; counter++) {
         for (distanceCounter = 0; distanceCounter < distancesToSort.length; distanceCounter++) {
           if (distances[counter] == distancesToSort[distanceCounter]){
-            sortedMarkerPositions[distanceCounter] = realMarkerPositions[counter];
+            var numberOccurences = countOccurences(realMarkerPositions[counter],sortedMarkerPositions);
+            var numberOccurencesOther = countOccurences(realMarkerPositions[counter],realMarkerPositions);
+            // console.log(numberOccurences);
+            //   console.log(numberOccurencesOther);
+            if (numberOccurences < numberOccurencesOther){
+              sortedMarkerPositions[distanceCounter] = realMarkerPositions[counter];
+              distancesToSort[distanceCounter] = null;
+        } else{
+          // console.log(numberOccurences);
+          //   console.log(numberOccurencesOther);
+          //   console.log(realMarkerPositions[counter]);
+        }
           }
         }
       }
     //  console.log(sortedMarkerPositions);
+      var sortedMarkerPositionsCopy = sortedMarkerPositions.slice();
       var sortedListings = {};
       for (counter = 0; counter < realMarkerPositions.length; counter++){
         for (distanceCounter = 0; distanceCounter < sortedMarkerPositions.length; distanceCounter++){
-          if (realMarkerPositions[counter] == sortedMarkerPositions[distanceCounter]){
+          if (realMarkerPositions[counter] == sortedMarkerPositionsCopy[distanceCounter]){
             sortedListings[distanceCounter] = listings[counter];
+            sortedMarkerPositionsCopy[distanceCounter] = null;
           }
         }
       }
@@ -127,6 +142,22 @@ function updatedListingsDisplay(){
   });
 }
 
+
+function countOccurences(a, obj) {
+  var stupidCounter=0;
+  //console.log(a);
+    for (var newindex = 0; newindex < obj.length; newindex++) {
+        if ((typeof(obj[newindex]) != "undefined") && (Math.abs(obj[newindex]['lat'] - a['lat']) < .00000001) && (Math.abs(obj[newindex]['lng'] - a['lng']) < .00000001)){
+            stupidCounter++;
+            //console.log(obj[newindex]);
+            //console.log(a);
+        }
+    }
+  //  console.log(a);
+  //  console.log(obj);
+  //  console.log(stupidCounter);
+    return stupidCounter;
+}
 
 
   function findLatLang(address, i, geocoder) {
@@ -276,7 +307,7 @@ function updatedListingsDisplay(){
         newPromise.then(function(superReturnVals) {
           listings = superReturnVals[0];
           realMarkerPositions = superReturnVals[1];
-          console.log(superReturnVals);
+        //  console.log(superReturnVals);
           updatedListingsDisplay();
         });
 
