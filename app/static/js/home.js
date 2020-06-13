@@ -15,14 +15,14 @@ function updatedListingsDisplay(){
       }
     }
   }
-  console.log(sortedList);
+//  console.log(sortedList);
   var realList = document.getElementById('listingList')
   realList.innerHTML = '';
   for (listCounter = 0; listCounter < sortedList.length; listCounter++){
-    console.log(sortedList[listCounter]);
+//    console.log(sortedList[listCounter]);
     realList.appendChild(sortedList[listCounter]);
   }
-  console.log(realList);
+//  console.log(realList);
 }
 
 
