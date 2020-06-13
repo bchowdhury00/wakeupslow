@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os, platform
 from flask_socketio import SocketIO
-from app.data.dbfunc import *
+from data.dbfunc import *
 
 
 UPLOAD_FOLDER = ""
@@ -120,6 +120,10 @@ def profile():
                 return render_template('profileInfo.html', userInfo=arr, success='Updated Location')
             elif request.args['mType']=='1':
                 return render_template('profileInfo.html', userInfo=arr, success='Updated Contact Info')
+            elif request.args['mType']=='2':
+                return render_template('profileInfo.html', userInfo = arr, alert='You Must Log a Valid Location to Create a Listing')
+            elif request.args['mType']=='3':
+                return render_template('profileInfo.html', userInfo = arr, alert='Invalid Location')
         return render_template('profileInfo.html', userInfo=arr)
     else:
         if request.get_json():

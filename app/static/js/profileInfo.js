@@ -27,22 +27,89 @@ function editLocation() {
   document.getElementById('locationForm').scrollIntoView();
 }
 
-
+var promiseMade;
 function confirmLocation() {
   var input = document.getElementById("pac-input").value;
   if (input == "") {
     input = "{latitude:" + currentPosition['latitude'] + ", " + "longitude: " + currentPosition['longitude'] + "}";
   }
+  if (input.length < 2){
+    window.location = "/profile?mType=3";
+  }
   console.log(input);
-  fetch("/profile", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(input)
-    }).then(res => res.json())
-    .then(data => {
-      console.log(window.location);
-      window.location = data.redirect;
-    })
+  var validation = validateAddress(input);
+  if (promiseMade) {
+    validation.then(function(result) {
+      console.log(result);
+      if (result){
+        fetch("/profile", {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(input)
+          }).then(res => res.json())
+          .then(data => {
+            console.log(window.location);
+            window.location = data.redirect;
+          });
+      } else {
+        window.location = "/profile?mType=3";
+      }
+    });
+  } else {
+    if (validation){
+      fetch("/profile", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(input)
+        }).then(res => res.json())
+        .then(data => {
+          console.log(window.location);
+          window.location = data.redirect;
+        });
+      } else {
+        window.location = "/profile?mType=3";
+      }
+  }
 }
+
+
+function validateAddress(address) {
+  if (address[0] == "{") {
+    return true;
+  }
+  promiseMade = true;
+  return new Promise(function(resolve, reject) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+      address: address
+    }, function(results, error) {
+      if (error != "OK") {
+        return resolve(false);
+      }
+      console.log(results);
+      return resolve(true);
+    });
+  });
+}
+
+// (function(w, google) {
+//
+// var validLoc = validateAddress(position);
+// if (promiseMade){
+//   validLoc.then(function(result){
+//     console.log(result);
+//     if (result == false){
+//       window.location = "/profile?mType=2";
+//     }
+// });
+// } else {
+// console.log(validLoc);
+// if (!validLoc){
+//   window.location = "/profile?mType=2";
+// }
+// }
+// })(window, google);
