@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os, platform
 from flask_socketio import SocketIO
-from data.dbfunc import *
+from app.data.dbfunc import *
 
 
 UPLOAD_FOLDER = ""
@@ -41,10 +41,20 @@ def home():
         return redirect('/')
     return render_template('home.html', listings=getListings(session['username']))
 
-@app.route('/listings/<listingID>')
+@app.route('/listings/<listingID>', methods=['GET','POST'])
 def viewListing(listingID):
     arr = listingID[1:].split('L')
-    return render_template("viewListing.html", listing = getListing(int(arr[0]), int(arr[1])))
+    listingInfo = getListing(int(arr[0]), int(arr[1]))
+    if request.method == 'POST':
+        buyerName = request.form['buyerUsername']
+        print(buyerName)
+        if len(getUserInfo(buyerName)) > 0:
+            print(getUserInfo(buyerName)[0])
+            listing = markSold(listingID,buyerName)
+            return render_template("viewListing.html", listing=listingInfo, success='Marked as Sold')
+        else:
+            return render_template("viewListing.html", listing=listingInfo, alert='Invalid buyer username')
+    return render_template("viewListing.html", listing=listingInfo)
 
 
 @app.route('/another')

@@ -55,7 +55,7 @@
                             </div>
                             <div class="col-8">
                                 <div class="card-title">
-                                    <h4> {{ listings[listing]['title'] }}</h4>
+                                    <h4 {% if category != 'myActive' %}class="text-danger"{% endif %} > {{ listings[listing]['title'] }}</h4>
                                 </div>
                                 <div class="border"></div>
                                 <div class="row" style="font-size:0.7rem">
@@ -75,6 +75,8 @@
                         <div class="row  my-2">
                             {% if category == 'purchases' %}
                                 <a class="btn btn-outline-success mx-auto text-success">Message Vendor</a>
+                            {% elif category == 'myActive' %}
+                                <a class="btn btn-outline-danger mx-auto text-danger" href="/listings/{{ listings[listing]['listingID'] }}">Mark as sold</a>
                             {% endif %}
                             <a class="btn btn-outline-primary mx-auto text-primary" href="/listings/{{ listings[listing]['listingID'] }}">View Listing</a>
                         </div>
