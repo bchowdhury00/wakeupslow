@@ -147,7 +147,8 @@ def myPurchases():
 @app.route('/createListing', methods=['GET', 'POST'])
 def createListing():
     if request.method == 'GET':
-        return render_template('create.html')
+        location = getUserInfo(session['username'])[3]
+        return render_template('create.html', location = location)
     else:
         if 'username' not in session:
             return redirect(url_for('login', mType=2))

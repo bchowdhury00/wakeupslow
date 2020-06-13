@@ -1,7 +1,7 @@
 import sqlite3
 import json
 
-DB_FILE = "data/database.db"
+DB_FILE = "app/data/database.db"
 
 def getNextID(type):
     db = sqlite3.connect(DB_FILE)
