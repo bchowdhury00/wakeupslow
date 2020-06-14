@@ -207,8 +207,15 @@ def getOpenConvos(user):
             result.append(elem[0])
     return result
 
-def addMessage(fromUser,toUser,timestamp,content):
+def addMessage(fromUser,toUser,content,timestamp):
     db = sqlite3.connect(DB_FILE)
     c = db.cursor()
-    #querry = 'INSERT INTO messages(fromUser integer, toUser integer, content text, tStamp text) VALUES({},{},{},{});'.format(fromUser, toUser, content, timeStamp,)
+    c.execute('INSERT INTO messages(fromUser,toUser,content,tStamp) '
+              'VALUES({},\"{}\",\"{}\",\"{}\");'.format(fromUser,toUser,content,timestamp))
+    db.commit()
     return
+
+def getChatRoom(user1,user):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    arr = c.execute('SELECT roomname FROM chatrooms WHERE (user1={} and user2={}) or (user1={} and user2={});'.format(user1, user2, user2, user1)).fetchall()

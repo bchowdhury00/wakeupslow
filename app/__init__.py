@@ -167,7 +167,7 @@ def createListing():
 
 
 @app.route('/messages')
-def idk():
+def viewMyMessages():
     if 'username' not in session:
         return redirect(url_for('login', mType=2))
     arr = getOpenConvos(session['username'])
@@ -184,12 +184,4 @@ def viewMessages(username,convoID):
 
 def messageReceived(methods=['GET', 'POST']):
     print('message was received!!!')
-
-@socketio.on('my event')
-def handle_my_custom_event(json, methods=['GET', 'POST']):
-    print('received my event: ' + str(json))
-    socketio.emit('my response', json, callback=messageReceived)
-
-if __name__ == "__main__":
-    app.debug = True
-    socketio.run(app)
+    return
