@@ -233,6 +233,7 @@ function getMarkerPositions(geocoder) {
   return markerPositions;
 }
 var allGoogMarkers = [];
+var searchedMarker;
 
 function setUpSearchBox(newMarkers) {
   //console.log(realMarkerPositions);
@@ -313,12 +314,18 @@ function setUpSearchBox(newMarkers) {
       // };
       if (document.getElementById('searched') == null) {
         // Create a marker for each place.
-        markers.push(new google.maps.Marker({
-          map: map,
-          title: place.name,
-          position: place.geometry.location,
-          id: "searched"
-        }));
+        if (typeof(searchedMarker) == "undefined"){
+          searchedMarker = new google.maps.Marker({map: map, title:place.name, position: place.geometry.location});
+        } else {
+          searchedMarker.setPosition(place.geometry.location);
+          searchedMarker.setTitle(place.name);
+        }
+        // markers.push(new google.maps.Marker({
+        //   map: map,
+        //   title: place.name,
+        //   position: place.geometry.location,
+        //   id: "searched"
+        // }));
       } else {
         document.getElementById('searched').position = place.geometry.location;
       }
