@@ -111,18 +111,9 @@ function sortDistances(locations, currentLocation) {
       for (counter = 0; counter < distances.length; counter++) {
         for (distanceCounter = 0; distanceCounter < distancesToSort.length; distanceCounter++) {
           if (distances[counter] == distancesToSort[distanceCounter]) {
-            var numberOccurences = countOccurences(realMarkerPositions[counter], sortedMarkerPositions);
-            var numberOccurencesOther = countOccurences(realMarkerPositions[counter], realMarkerPositions);
-            // console.log(numberOccurences);
-            //   console.log(numberOccurencesOther);
-            if (numberOccurences < numberOccurencesOther) {
               sortedMarkerPositions[distanceCounter] = realMarkerPositions[counter];
-              distancesToSort[distanceCounter] = null;
-            } else {
-              // console.log(numberOccurences);
-              //   console.log(numberOccurencesOther);
-              //   console.log(realMarkerPositions[counter]);
-            }
+              distancesToSort[distanceCounter] = {};
+              distances[counter] = {};
           }
         }
       }
@@ -133,7 +124,8 @@ function sortDistances(locations, currentLocation) {
         for (distanceCounter = 0; distanceCounter < sortedMarkerPositions.length; distanceCounter++) {
           if (realMarkerPositions[counter] == sortedMarkerPositionsCopy[distanceCounter]) {
             sortedListings[distanceCounter] = listings[counter];
-            sortedMarkerPositionsCopy[distanceCounter] = null;
+            sortedMarkerPositionsCopy[distanceCounter] = {};
+            realMarkerPositions[counter] = {};
           }
         }
       }
