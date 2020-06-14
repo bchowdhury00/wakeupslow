@@ -7,5 +7,6 @@ c.execute('CREATE TABLE IF NOT EXISTS users(id integer, username text, password 
 c.execute('CREATE TABLE IF NOT EXISTS listings(id integer, userID integer, itemName text, itemCategory text,'
           'itemDescription text, price decimal, picture text, purchasedBy integer);')
 c.execute('CREATE TABLE IF NOT EXISTS messages(fromUser integer, toUser integer, content text, tStamp text);')
+c.execute('CREATE TABLE IF NOT EXISTS chatrooms(user1 integer,user2 integer,active1 text,active2 text,roomname text);')
 
 db.commit()

@@ -1,7 +1,7 @@
 import sqlite3
 import json
 
-DB_FILE = "data/database.db"
+DB_FILE = "app/data/database.db"
 
 def getNextID(type):
     db = sqlite3.connect(DB_FILE)
@@ -45,7 +45,9 @@ def getUserInfo(user):
         arr = c.execute('SELECT * FROM users WHERE username=\"{}\";'.format(user)).fetchall()
     else:
         arr = c.execute('SELECT * FROM users WHERE id={};'.format(user)).fetchall()
-    return arr[0]
+    if len(arr)>0:
+        return arr[0]
+    return []
 
 
 def addListing(user,title,category,description,price,picture):
@@ -219,3 +221,14 @@ def getChatRoom(user1,user):
     db = sqlite3.connect(DB_FILE)
     c = db.cursor()
     arr = c.execute('SELECT roomname FROM chatrooms WHERE (user1={} and user2={}) or (user1={} and user2={});'.format(user1, user2, user2, user1)).fetchall()
+    #querry = 'INSERT INTO messages(fromUser integer, toUser integer, content text, tStamp text) VALUES({},{},{},{});'.format(fromUser, toUser, content, timeStamp,)
+    return ''
+
+def markSold(listingID,buyerName):
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+    arr = listingID[1:].split('L')
+    buyerID = getUserInfo(buyerName)[0]
+    c.execute('UPDATE listings SET purchasedBy={} WHERE userID={} AND id={};'.format(buyerID,arr[0],arr[1]))
+    db.commit()
+    return getListing(int(arr[0]),int(arr[1]))

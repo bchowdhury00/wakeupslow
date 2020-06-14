@@ -25,7 +25,7 @@ def hello_world():
             "location": "{lat:40.679530, lng:-73.742246}",
             "price": "00.00",
             "type": "Lacrosse",
-            "listingID" : "1"
+            "listingID": "1"
         },
         1: {
             "title": "title2",
@@ -34,7 +34,7 @@ def hello_world():
             "location": "NY",
             "price": "00.00",
             "type": "Lacrosse",
-            "listingID" : "2"
+            "listingID": "2"
         },
         2: {
             "title": "title3",
@@ -43,7 +43,7 @@ def hello_world():
             "location": "Manhattan NY",
             "price": "00.00",
             "type": "Lacrosse",
-            "listingID" : "3"
+            "listingID": "3"
         },
         3: {
             "title": "title4",
@@ -52,7 +52,7 @@ def hello_world():
             "location": "Queens NY",
             "price": "00.00",
             "type": "Lacrosse",
-            "listingID" : "4"
+            "listingID": "4"
         },
         4: {
             "title": "title5",
@@ -61,7 +61,16 @@ def hello_world():
             "location": "Brooklyn NY",
             "price": "00.00",
             "type": "Lacrosse",
-            "listingID" : "5"
+            "listingID": "5"
+        },
+        5: {
+            "title": "title6",
+            "vendor": "username",
+            "imagesrc": "static/images/index.png",
+            "location": "Brooklyn NY",
+            "price": "00.00",
+            "type": "Lacrosse",
+                    "listingID": "6"
         }
     }
     return render_template('home.html', listings=listings)

@@ -5,7 +5,7 @@
         <div class="col">
             <div class="list">
                 <div class="list-item my-3">
-                    <h2> Title: {{ listing['title'] }}</h2>
+                    <h2 {% if 'purchasedBy' in listing %} class="text-danger" {% endif %}> Title: {{ listing['title'] }}</h2>
                 </div>
                 <div class="list-item my-3">
                     <p> Vendor: {{ listing['vendor'] }} </p>
@@ -25,12 +25,38 @@
                 {% if 'purchasedBy' in listing %}
                     <div class="list-item my-3">
                         <p> Purchased By: {{ listing['purchasedBy'] }} </p>
-                     </div>
+                    </div>
                 {% endif %}
             </div>
             {% if 'username' in session %}
                 {% if listing['vendor'] != session['username'] %}
-                    <button class="btn btn-outline-success my-3" > Message Vendor</button>
+                    <button class="btn btn-outline-success my-3">Message Vendor</button>
+                {% elif 'purchasedBy' not in listing %}
+                    <button id='sell' class="btn btn-outline-danger my-3">Mark as sold</button>
+                    <form id="sellForm" method="POST" style="display:none">
+                        <div class="border"></div>
+                        <div class="row">
+                            <h6 class="mx-auto my-3"> This item will be removed from active listings </h6>
+                            <div class="input-group my-5 mx-5">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Buyer Username: </span>
+                                </div>
+                                <input name="buyerUsername" class="form-control" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button type="submit" class="btn btn-outline-danger w-25 mx-auto my-5 text-danger">
+                                Confirm Buyer
+                            </button>
+                        </div>
+                    </form>
+                    <script>
+                        document.getElementById('sell').addEventListener('click', revealForm);
+                        function revealForm(){
+                            document.getElementById('sellForm').style.display = 'inherit';
+                            document.getElementById('sell').style.display = 'none';
+                        }
+                    </script>
                 {% endif %}
             {% endif %}
         </div>
