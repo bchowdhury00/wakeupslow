@@ -362,12 +362,9 @@ function select(id){
   var newlySelected = document.getElementById(id);
   if (alreadySelected == ""){
     alreadySelected = newlySelected;
-  //  console.log(newlySelected.children[0].style);
-  //  newlySelected.children[0].style =   newlySelected.children[0].style + "border-width:medium;border-color:blue;";
     newlySelected.children[0].style['border-width'] = 'medium';
     newlySelected.children[0].style['border-color'] = 'blue';
-  //  console.log(newlySelected.children[0].style);
-  } else {
+} else if (newlySelected != alreadySelected){
   //  alreadySelected.children[0].style = alreadySelected.children[0].style.slice(0, alreadySelected.children[0].style.length - 38)
     alreadySelected.children[0].style['border-width'] = '';
     alreadySelected.children[0].style['border-color'] = '';
@@ -375,12 +372,9 @@ function select(id){
     newlySelected.children[0].style['border-width'] = 'medium';
     newlySelected.children[0].style['border-color'] = 'blue';
     alreadySelected = newlySelected;
+  } else if (newlySelected == alreadySelected){
+    alreadySelected.children[0].style['border-width'] = '';
+    alreadySelected.children[0].style['border-color'] = '';
+    alreadySelected = "";
   }
 }
-
-// function setUpListings(){
-//   var lcounter = 0;
-//   for (lcounter = 0; lcounter < listings.length; lcounter++){
-//     var
-//   }
-// }
