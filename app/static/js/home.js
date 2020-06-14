@@ -266,6 +266,19 @@ function setUpSearchBox(newMarkers) {
     // newMarker.then(function(result){
     //   console.log(result);
     // });
+    var correspondingListing = document.getElementById(newMarker.id.slice(1));
+    correspondingListing.addEventListener('click', function(){
+      console.log(allGoogMarkers);
+      var corMarker;
+      for (var ss=0; ss<allGoogMarkers.length; ss++){
+        if (allGoogMarkers[ss].id == "M" + this.id){
+          corMarker = allGoogMarkers[ss];
+        }
+      }
+      console.log(corMarker);
+      map.setCenter(corMarker.position);
+      select(this.id);
+    });
   }
 
   var markers = [];
@@ -364,3 +377,10 @@ function select(id){
     alreadySelected = newlySelected;
   }
 }
+
+// function setUpListings(){
+//   var lcounter = 0;
+//   for (lcounter = 0; lcounter < listings.length; lcounter++){
+//     var
+//   }
+// }
