@@ -196,8 +196,10 @@ def message(otheruser):
         return redirect(url_for('login', mType=2))
     user = session['username']
     user2= getUserInfo(otheruser)[1]
-    chatroom = getChatRoom(user,otheruser)
-    return render_template("messages.html",room = json.dumps(chatroom),myusername=json.dumps(user),username2=json.dumps(user2))
+    history = json.dumps(getConvo(user,user2))
+    print(history)
+    chatroom = json.dumps(getChatRoom(user,otheruser))
+    return render_template("messages.html",room=chatroom,myusername=json.dumps(user),username2=json.dumps(user2),hist=history)
 
 def messageReceived(methods=['GET', 'POST']):
     print('message was received!!!')
@@ -210,6 +212,8 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     user1= getUserInfo(json['user_name'])[0]
     user2= getUserInfo(json['other_user'])[0]
     #print(roomname)
+    if (json['message'] == ""):
+        return
     addMessage(user1,user2,json['message'],json['time'])
     socketio.emit('my response',json,room=roomname,callback=messageReceived)
     return
