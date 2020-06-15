@@ -1,7 +1,10 @@
 import sqlite3
 import json
+import random
+import string
 
-DB_FILE = "app/data/database.db"
+
+DB_FILE = "data/database.db"
 
 def getNextID(type):
     db = sqlite3.connect(DB_FILE)
@@ -217,12 +220,23 @@ def addMessage(fromUser,toUser,content,timestamp):
     db.commit()
     return
 
-def getChatRoom(user1,user):
+def createChatRoom(stringLength):
+    letters = string.ascii_letters
+    return ''.join(random.choice(letters) for i in range(stringLength))
+
+def getChatRoom(user1,user2):
+    id1 = getUserInfo(user1)[0]
+    id2 = getUserInfo(user2)[0]
     db = sqlite3.connect(DB_FILE)
     c = db.cursor()
-    arr = c.execute('SELECT roomname FROM chatrooms WHERE (user1={} and user2={}) or (user1={} and user2={});'.format(user1, user2, user2, user1)).fetchall()
-    #querry = 'INSERT INTO messages(fromUser integer, toUser integer, content text, tStamp text) VALUES({},{},{},{});'.format(fromUser, toUser, content, timeStamp,)
-    return ''
+    arr = c.execute('SELECT roomname FROM chatrooms WHERE (user1={} and user2={}) or (user1={} and user2={});'.format(id1, id2, id2, id1)).fetchall()
+    if (len(arr) > 0):
+        return arr[0][0]
+    rname = createChatRoom(10)
+    querry = 'INSERT INTO chatrooms(user1,user2,roomname) VALUES({},{},{});'.format(id1, id2, rname)
+    c.execute(querry)
+    db.commit()
+    return rname
 
 def markSold(listingID,buyerName):
     db = sqlite3.connect(DB_FILE)

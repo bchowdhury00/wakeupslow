@@ -4,7 +4,6 @@
 <div class="message_holder"></div>
 
 <form action="" method="POST">
-  <input type="text" class="username" placeholder="User Name"/>
   <input type="text" class="message" placeholder="Messages"/>
   <input type="submit"/>
 </form>
@@ -13,19 +12,22 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 <script type="text/javascript">
-  var socket = io.connect('http://' + document.domain + ':' + location.port);
-
+  let socket = io.connect('http://' + document.domain + ':' + location.port);
+  let my_room = {{room}};
+  let my_username = {{myusername}};
   socket.on( 'connect', function() {
-      socket.emit( 'my event', {
-          data: 'User Connected'
-      } )
+      socket.emit('join',{
+	  username: my_username,
+	  room: my_room
+      })
+      socket.join(my_room);
       var form = $( 'form' ).on( 'submit', function( e ) {
           e.preventDefault()
-          let user_name = $( 'input.username' ).val()
           let user_input = $( 'input.message' ).val()
-          socket.emit( 'my event', {
-              user_name : user_name,
-              message : user_input
+          socket.to(my_room).emit( 'my event', {
+              user_name : my_username,
+              message : user_input,
+	      room: my_room
           } )
           $( 'input.message' ).val( '' ).focus()
       } )
@@ -34,7 +36,7 @@
       console.log( msg )
       if( typeof msg.user_name !== 'undefined' ) {
           $( 'h3' ).remove()
-          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
+          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.my_username+'</b> '+msg.message+'</div>' )
       }
   })
   </script>

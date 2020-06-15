@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os, platform
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO,join_room, leave_room
 from data.dbfunc import *
 
 
@@ -190,12 +190,17 @@ def viewMyMessages():
     return render_template("mymessages.html")
 
 
-@app.route('/messages/<username>/<convoID>')
-def viewMessages(username,convoID):
+@app.route('/messages/<otheruser>')
+def viewMessages(otheruser):
+    if 'username' not in session:
+        return redirect(url_for('login', mType=2))
     arr=convoID.split('x')
     print(arr)
-    ob=getConvo(username,getUserInfo(int(arr[1]))[1])
-    return ob
+    user = session['username']
+    chatroom = getChatRoom(user,otheruser)
+    #ob=getConvo(username,getUserInfo(int(arr[1]))[1])
+    #return ob
+    return render_template("messages.html",room = chatroom,myusername=user)
 
 def messageReceived(methods=['GET', 'POST']):
     print('message was received!!!')
@@ -204,7 +209,23 @@ def messageReceived(methods=['GET', 'POST']):
 @socketio.on('my event')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
-    socketio.emit('my response', json, callback=messageReceived)
+    roomname = json['room']
+    socketio.emit('my response', json,room=roomname,callback=messageReceived)
+    return
+
+@socketio.on('join')
+def on_join(data,methods=['GET', 'POST']):
+    username = data['username']
+    room = data['room']
+    join_room(room)
+    send(username + ' has entered the room.', room=room)
+
+@socketio.on('leave')
+def on_leave(data,methods=['GET', 'POST']):
+    username = data['username']
+    room = data['room']
+    leave_room(room)
+    send(username + ' has left the room.', room=room)
 
 if __name__ == "__main__":
     app.debug = True
