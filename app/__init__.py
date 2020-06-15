@@ -186,6 +186,9 @@ def createListing():
             image = request.files["image"]
             ext = image.filename.split('.')[-1]
             print(ext)
+            if filename == "":
+                filename = "index"
+                ext = "png"
             filename += ("." + ext)
             image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
         print(filename)
