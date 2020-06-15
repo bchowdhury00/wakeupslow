@@ -43,12 +43,15 @@
         </div>
     {% endif %}
     {{ category }}
-    <div class="row mx-auto my-3" style="overflow-x:scroll; width:1000px;">
-        <div class="list" style="text-align:center">
+    <!-- <div id="toScroll"class="row mx-auto my-3 text-center"  style="align-items:center; display:flex; overflow-x:scroll; height:250px; overflow-y:hidden; width:1100px"> -->
+        <!-- <div class="list" style="text-align:center; overflow-x:scroll; height:250px"> -->
+  <div class="container-fluid">
+    <div class="row flex-row flex-nowrap" style="overflow-x:scroll">
             {% for listing in listings %}
             <!-- <div class="col"> -->
-                <div class="list-item" style="display:inline-block">
-                    <div class="card mx-2 my-3" style="height:200px; width:400px">
+                <!-- <div class="list-item" style="display:inline-block"> -->
+                <div class="col-xs-4" style="display:inline-block">
+                    <div class="card mx-2 my-3" style="height:200px; width:400px; display:inline-block">
 
                         <div class="row h-75 w-100">
                             <div class="col-4">
@@ -83,12 +86,15 @@
                             <a class="btn btn-outline-primary mx-auto text-primary" href="/listings/{{ listings[listing]['listingID'] }}">View Listing</a>
                         </div>
                     </div>
-                </div>
+                    </div>
+                <!-- </div> -->
                 <!-- </div> -->
             {% endfor %}
         </div>
-    </div>
+        </div>
+    <!-- </div> -->
 
 
-
+<script>
+</script>
 {% endblock %}
