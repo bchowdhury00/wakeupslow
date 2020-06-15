@@ -167,8 +167,8 @@ def myPurchases():
 
 @app.route('/createListing', methods=['GET', 'POST'])
 def createListing():
+    location = getUserInfo(session['username'])[3]
     if request.method == 'GET':
-        location = getUserInfo(session['username'])[3]
         return render_template('create.html', location = location, key=key)
     else:
         if 'username' not in session:
@@ -176,6 +176,12 @@ def createListing():
         results = request.form
         print(results)
         filename = getFileName(session['username'])
+        if results['title'] == "" and results['price'] == "":
+            return render_template('create.html', location = location, key=key, alert="You Must Enter a Title And a Price")
+        if results['title'] == "":
+            return render_template('create.html', location = location, key=key, alert="You Must Enter a Title")
+        if results['price'] == "":
+            return render_template('create.html', location = location, key=key, alert="You Must Enter a Price")
         if request.files:
             image = request.files["image"]
             ext = image.filename.split('.')[-1]
