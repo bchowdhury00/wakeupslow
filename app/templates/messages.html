@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
 <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
-<div id="messageh" class="message_holder" style="overflow-y:scroll; height:300px;"></div>
+<div id="mydiv" class="message_holder" style="overflow-y:scroll; height:300px;"></div>
 
 <form action="" method="POST">
   <input type="text" class="message" placeholder="Messages"/>
@@ -15,8 +15,14 @@
   let socket = io.connect('http://' + document.domain + ':' + location.port);
   let my_room = {{ room|safe }} + "";
   let my_username = {{ myusername|safe }} + "";
-  let their_username = {{ username2|safe }} + ""; 
-  console.log(my_username);
+  let their_username = {{ username2|safe }} + "";
+  let history = JSON.parse({{ hist|safe }});
+  for (message in history.messages){
+      el = history.messages[message];
+      $( 'div.message_holder' ).append( '<div><b style="color: #000">'+el.fromUser+'</b> '+el.content+'</div>' )
+  }
+  $("#mydiv").scrollTop($("#mydiv")[0].scrollHeight);
+  console.log(history.messages);
   socket.on( 'connect', function() {
       socket.emit('join',{
 	  username: my_username,
@@ -26,14 +32,13 @@
           e.preventDefault()
 	  let currentDate = new Date();
 	  let date = currentDate.getDate();
-	  let month = currentDate.getMonth(); //Be careful! January is 0 not 1
+	  let month = currentDate.getMonth(); 
 	  let year = currentDate.getFullYear();
 	  let hour = currentDate.getHours();
 	  let minutes = currentDate.getMinutes();
 	  let seconds = currentDate.getSeconds();
 	  let mili = currentDate.getMilliseconds();
 	  var dateString = year + "-" +(month + 1) + "-" + date + " " + hour + ":" + minutes + ":" + seconds + "." + mili;
-	  console.log(dateString);
           let user_input = $( 'input.message' ).val()
           socket.emit( 'my event', {
               user_name : my_username,
@@ -50,11 +55,7 @@
 	  console.log(msg['user_name']);
           $( 'h3' ).remove()
           $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
-      }
-      let out = document.getElementById("messageh");
-      let isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
-      if (isScrolledToBottom){
-	  out.scrollTop = out.scrollHeight - out.clientHeight;
+	  $("#mydiv").scrollTop($("#mydiv")[0].scrollHeight);
       }
   })
   </script>
