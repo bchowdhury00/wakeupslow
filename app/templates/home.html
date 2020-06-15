@@ -63,14 +63,13 @@
               </div>
             </div>
             <div class="col">
-              <img src="{{listings[listing]['imagesrc']}}" alt="Generic placeholder image" class="mx-auto mt-4 mb-2 rounded w-75 h-75">
+              <img src="{{listings[listing]['imagesrc']}}" alt="Generic placeholder image" class="mx-auto mt-4 mb-2 rounded w-75" style="height:110px">
             </div>
           </div>
+          <div class="border"></div>
           <div class="row  my-2">
-	    <form action={{url_for("message",otheruser=listings[listing]['vendor'])}}>
-	      <button type="submit" class="btn btn-outline-success my-3">Message</button>
-	    </form>
-	    <a class="btn btn-outline-primary mx-auto text-primary" href="/listings/{{ listings[listing]['listingID'] }}"> View Listing</a>
+	       <a type="submit" class="btn btn-outline-success my-1 mx-auto" href="{{url_for("message",otheruser=listings[listing]['vendor'])}}">Message</a>
+	       <a class="btn btn-outline-primary mx-auto text-primary my-1" href="/listings/{{ listings[listing]['listingID'] }}"> View Listing</a>
           </div>
         </div>
       </div>
@@ -177,10 +176,9 @@
     });
   }
 
-
   //console.log(realMarkerPositions);
 </script>
 
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{}}&libraries=places&callback=initAutocomplete" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{key}}&libraries=places&callback=initAutocomplete" async defer></script>
 {% endblock %}
