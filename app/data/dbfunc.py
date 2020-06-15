@@ -4,7 +4,7 @@ import random
 import string
 
 
-DB_FILE = "data/database.db"
+DB_FILE = "app/data/database.db"
 
 def getNextID(type):
     db = sqlite3.connect(DB_FILE)
@@ -211,7 +211,7 @@ def getOpenConvos(user):
     for elem in arr:
         name = getUserInfo(elem[0])[1]
         if name not in result:
-            result.append(name) 
+            result.append(name)
     return result
 
 def addMessage(fromUser,toUser,content,timestamp):

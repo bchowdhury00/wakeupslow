@@ -4,18 +4,48 @@
 
 {% block body %}
 <div class="card-header">
-  <ul class="nav nav-pills card-header-pills">
+  <ul class="nav nav-pills card-header-pills mx-auto">
     <li class="nav-item">
-      <a class="nav-link" href="#">Category1</a>
+      <a class="nav-link" href="#">Football</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Category2</a>
+      <a class="nav-link" href="#">Lacrosse</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Category3</a>
+      <a class="nav-link" href="#">Hockey</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      <a class="nav-link" href="#">Baseball</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Apparel</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Skiing</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Snowboarding</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Softball</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Soccer</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Footwear</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Tennis</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Hiking</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Fishing</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Other</a>
     </li>
   </ul>
 </div>
@@ -28,7 +58,7 @@
 </style>
 
 <div class="row mb-3">
-  <div class="input-group mt-5 mx-5">
+  <div class="input-group mt-3 mx-5">
     <div class="input-group-prepend">
       <span class="input-group-text">Address or Area: </span>
     </div>
@@ -41,7 +71,7 @@
   <div class="col-4" style="overflow-y:scroll; height:600px">
     <div id="listingList" class="list">
       {% for listing in listings %}
-      <div class="list-item" id="{{listings[listing]['listingID']}}" onmouseover="hover('{{listings[listing]['listingID']}}')" onmouseout="unhover('{{listings[listing]['listingID']}}')">
+      <div class="list-item" id="{{listings[listing]['listingID']}}" onmouseover="hover('{{listings[listing]['listingID']}}')">
 
 
 
@@ -63,14 +93,13 @@
               </div>
             </div>
             <div class="col">
-              <img src="{{listings[listing]['imagesrc']}}" alt="Generic placeholder image" class="mx-auto mt-4 mb-2 rounded w-75 h-75">
+              <img src="{{listings[listing]['imagesrc']}}" alt="Generic placeholder image" class="mx-auto mt-4 mb-2 rounded w-75" style="height:110px">
             </div>
           </div>
+          <div class="border"></div>
           <div class="row  my-2">
-	    <form action={{url_for("message",otheruser=listings[listing]['vendor'])}}>
-	      <button type="submit" class="btn btn-outline-success my-3">Message</button>
-	    </form>
-	    <a class="btn btn-outline-primary mx-auto text-primary" href="/listings/{{ listings[listing]['listingID'] }}"> View Listing</a>
+	       <a type="submit" class="btn btn-outline-success my-1 mx-auto" href="{{url_for("message",otheruser=listings[listing]['vendor'])}}">Message</a>
+	       <a class="btn btn-outline-primary mx-auto my-1" href="/listings/{{ listings[listing]['listingID'] }}"> View Listing</a>
           </div>
         </div>
       </div>
@@ -177,10 +206,9 @@
     });
   }
 
-
   //console.log(realMarkerPositions);
 </script>
 
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{}}&libraries=places&callback=initAutocomplete" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{key}}&libraries=places&callback=initAutocomplete" async defer></script>
 {% endblock %}

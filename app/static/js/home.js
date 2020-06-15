@@ -346,14 +346,21 @@ var currentHover = "";
 
 function hover(id) {
   //  console.log(id);
-  var newHover = document.getElementById(id);
-  newHover.children[0].className = newHover.children[0].className + " shadow-lg";
+  if (currentHover != "" && currentHover != id){
+    var oldHover = document.getElementById(currentHover);
+    oldHover.children[0].className = oldHover.children[0].className.slice(0, oldHover.children[0].className.length - 10);
+  }
+  if (currentHover != id){
+    var newHover = document.getElementById(id);
+    newHover.children[0].className = newHover.children[0].className + " shadow-lg";
+    currentHover = id;
+  }
 }
 
-function unhover(id) {
-  var oldHover = document.getElementById(id);
-  oldHover.children[0].className = oldHover.children[0].className.slice(0, oldHover.children[0].className.length - 10);
-}
+// function unhover(id) {
+//   var oldHover = document.getElementById(id);
+//   oldHover.children[0].className = oldHover.children[0].className.slice(0, oldHover.children[0].className.length - 10);
+// }
 
 var alreadySelected = "";
 

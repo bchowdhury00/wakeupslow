@@ -3,7 +3,7 @@ import os, platform, json
 from flask_socketio import SocketIO,join_room, leave_room
 from data.dbfunc import *
 
-
+key = ""
 UPLOAD_FOLDER = ""
 
 if (platform.system() == "Windows"):
@@ -19,6 +19,13 @@ DB_FILE = "data/database.db"
 socketio = SocketIO(app)
 
 
+def getKey():
+    f = open('../key.txt')
+    return f.read()
+
+key = getKey()
+print(key)
+
 @app.route('/')
 def hello_world():
     if 'username' in session:
@@ -32,14 +39,14 @@ def home():
         if request.args['mType'] == '0':
             return render_template('home.html', alert="?")
         elif request.args['mType'] == '1':
-            return render_template('home.html', listings=getListings(session['username']), success="Logged In")
+            return render_template('home.html', listings=getListings(session['username']), success="Logged In", key=key)
         elif request.args['mType'] == '2':
-            return render_template('home.html', listings=getListings(session['username']), success="Listing Added")
+            return render_template('home.html', listings=getListings(session['username']), success="Listing Added", key=key)
         else:
-            return render_template('landing.html', success="Logged Out")
+            return render_template('landing.html', success="Logged Out", key=key)
     if 'username' not in session:
         return redirect('/')
-    return render_template('home.html', listings=getListings(session['username']))
+    return render_template('home.html', listings=getListings(session['username']), key = key)
 
 @app.route('/listings/<listingID>', methods=['GET','POST'])
 def viewListing(listingID):
@@ -117,14 +124,14 @@ def profile():
         print(arr)
         if len(request.args) > 0:
             if request.args['mType']=='0':
-                return render_template('profileInfo.html', userInfo=arr, success='Updated Location')
+                return render_template('profileInfo.html', userInfo=arr, success='Updated Location', key=key)
             elif request.args['mType']=='1':
-                return render_template('profileInfo.html', userInfo=arr, success='Updated Contact Info')
+                return render_template('profileInfo.html', userInfo=arr, success='Updated Contact Info', key=key)
             elif request.args['mType']=='2':
-                return render_template('profileInfo.html', userInfo = arr, alert='You Must Log a Valid Location to Create a Listing')
+                return render_template('profileInfo.html', userInfo = arr, alert='You Must Log a Valid Location to Create a Listing', key=key)
             elif request.args['mType']=='3':
-                return render_template('profileInfo.html', userInfo = arr, alert='Invalid Location')
-        return render_template('profileInfo.html', userInfo=arr)
+                return render_template('profileInfo.html', userInfo = arr, alert='Invalid Location', key=key)
+        return render_template('profileInfo.html', userInfo=arr, key=key)
     else:
         if request.get_json():
             newlocation = request.get_json()
@@ -160,15 +167,21 @@ def myPurchases():
 
 @app.route('/createListing', methods=['GET', 'POST'])
 def createListing():
+    location = getUserInfo(session['username'])[3]
     if request.method == 'GET':
-        location = getUserInfo(session['username'])[3]
-        return render_template('create.html', location = location)
+        return render_template('create.html', location = location, key=key)
     else:
         if 'username' not in session:
             return redirect(url_for('login', mType=2))
         results = request.form
         print(results)
         filename = getFileName(session['username'])
+        if results['title'] == "" and results['price'] == "":
+            return render_template('create.html', location = location, key=key, alert="You Must Enter a Title And a Price")
+        if results['title'] == "":
+            return render_template('create.html', location = location, key=key, alert="You Must Enter a Title")
+        if results['price'] == "":
+            return render_template('create.html', location = location, key=key, alert="You Must Enter a Price")
         if request.files:
             image = request.files["image"]
             ext = image.filename.split('.')[-1]
