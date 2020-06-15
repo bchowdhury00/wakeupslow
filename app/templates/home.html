@@ -58,7 +58,7 @@
 </style>
 
 <div class="row mb-3">
-  <div class="input-group mt-5 mx-5">
+  <div class="input-group mt-3 mx-5">
     <div class="input-group-prepend">
       <span class="input-group-text">Address or Area: </span>
     </div>
@@ -99,7 +99,7 @@
           <div class="border"></div>
           <div class="row  my-2">
 	       <a type="submit" class="btn btn-outline-success my-1 mx-auto" href="{{url_for("message",otheruser=listings[listing]['vendor'])}}">Message</a>
-	       <a class="btn btn-outline-primary mx-auto text-primary my-1" href="/listings/{{ listings[listing]['listingID'] }}"> View Listing</a>
+	       <a class="btn btn-outline-primary mx-auto my-1" href="/listings/{{ listings[listing]['listingID'] }}"> View Listing</a>
           </div>
         </div>
       </div>
