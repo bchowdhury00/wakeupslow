@@ -37,7 +37,7 @@ def hello_world():
 def home():
     if len(request.args) > 0:
         if request.args['mType'] == '0':
-            return render_template('home.html', alert="?")
+            return render_template('home.html', alert="?", key=key)
         elif request.args['mType'] == '1':
             return render_template('home.html', listings=getListings(session['username']), success="Logged In", key=key)
         elif request.args['mType'] == '2':
