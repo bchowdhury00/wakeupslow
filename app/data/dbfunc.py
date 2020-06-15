@@ -201,22 +201,24 @@ def getOpenConvos(user):
     userID = getUserInfo(user)[0]
     result=[]
     arr = c.execute('SELECT toUser FROM messages WHERE fromUser={};'.format(userID)).fetchall()
-    print(arr)
+    #print(arr)
     for elem in arr:
-        if elem[0] not in result:
-            result.append(elem[0])
+        name = getUserInfo(elem[0])[1]
+        if name not in result:
+            result.append(name)
     arr = c.execute('SELECT fromUser FROM messages WHERE toUser={};'.format(userID)).fetchall()
-    print(arr)
+    #print(arr)
     for elem in arr:
-        if elem[0] not in result:
-            result.append(elem[0])
+        name = getUserInfo(elem[0])[1]
+        if name not in result:
+            result.append(name) 
     return result
 
 def addMessage(fromUser,toUser,content,timestamp):
     db = sqlite3.connect(DB_FILE)
     c = db.cursor()
     c.execute('INSERT INTO messages(fromUser,toUser,content,tStamp) '
-              'VALUES({},\"{}\",\"{}\",\"{}\");'.format(fromUser,toUser,content,timestamp))
+              'VALUES(\"{}\",\"{}\",\"{}\",\"{}\");'.format(fromUser,toUser,content,timestamp))
     db.commit()
     return
 
@@ -233,7 +235,7 @@ def getChatRoom(user1,user2):
     if (len(arr) > 0):
         return arr[0][0]
     rname = createChatRoom(10)
-    querry = 'INSERT INTO chatrooms(user1,user2,roomname) VALUES({},{},{});'.format(id1, id2, rname)
+    querry = 'INSERT INTO chatrooms(user1,user2,roomname) VALUES({},\"{}\",\"{}\");'.format(id1, id2, rname)
     c.execute(querry)
     db.commit()
     return rname

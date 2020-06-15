@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
-import os, platform
+import os, platform, json
 from flask_socketio import SocketIO,join_room, leave_room
 from data.dbfunc import *
 
@@ -181,26 +181,23 @@ def createListing():
         return redirect(url_for('home', mType=2))
 
 
-@app.route('/messages')
+@app.route('/allmessages')
 def viewMyMessages():
     if 'username' not in session:
         return redirect(url_for('login', mType=2))
     arr = getOpenConvos(session['username'])
     print(arr)
-    return render_template("mymessages.html")
+    return render_template("mymessages.html",arr=arr)
 
 
-@app.route('/messages/<otheruser>')
-def viewMessages(otheruser):
+@app.route('/messages/<otheruser>',methods=['GET', 'POST'])
+def message(otheruser):
     if 'username' not in session:
         return redirect(url_for('login', mType=2))
-    arr=convoID.split('x')
-    print(arr)
     user = session['username']
+    user2= getUserInfo(otheruser)[1]
     chatroom = getChatRoom(user,otheruser)
-    #ob=getConvo(username,getUserInfo(int(arr[1]))[1])
-    #return ob
-    return render_template("messages.html",room = chatroom,myusername=user)
+    return render_template("messages.html",room = json.dumps(chatroom),myusername=json.dumps(user),username2=json.dumps(user2))
 
 def messageReceived(methods=['GET', 'POST']):
     print('message was received!!!')
@@ -210,7 +207,11 @@ def messageReceived(methods=['GET', 'POST']):
 def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
     roomname = json['room']
-    socketio.emit('my response', json,room=roomname,callback=messageReceived)
+    user1= getUserInfo(json['user_name'])[0]
+    user2= getUserInfo(json['other_user'])[0]
+    #print(roomname)
+    addMessage(user1,user2,json['message'],json['time'])
+    socketio.emit('my response',json,room=roomname,callback=messageReceived)
     return
 
 @socketio.on('join')
@@ -218,14 +219,14 @@ def on_join(data,methods=['GET', 'POST']):
     username = data['username']
     room = data['room']
     join_room(room)
-    send(username + ' has entered the room.', room=room)
+    socketio.send(username + ' has entered the room.', room=room)
 
 @socketio.on('leave')
 def on_leave(data,methods=['GET', 'POST']):
     username = data['username']
     room = data['room']
     leave_room(room)
-    send(username + ' has left the room.', room=room)
+    socketio.send(username + ' has left the room.', room=room)
 
 if __name__ == "__main__":
     app.debug = True

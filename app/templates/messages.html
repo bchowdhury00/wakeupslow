@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
 <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
-<div class="message_holder"></div>
+<div class="message_holder" style="overflow-y:scroll; height:800px;"></div>
 
 <form action="" method="POST">
   <input type="text" class="message" placeholder="Messages"/>
@@ -13,32 +13,45 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 <script type="text/javascript">
   let socket = io.connect('http://' + document.domain + ':' + location.port);
-  let my_room = {{room}};
-  let my_username = {{myusername}};
+  let my_room = {{ room|safe }} + "";
+  let my_username = {{ myusername|safe }} + "";
+  let their_username = {{ username2|safe }} + ""; 
+  console.log(my_username);
   socket.on( 'connect', function() {
       socket.emit('join',{
 	  username: my_username,
 	  room: my_room
       })
-      socket.join(my_room);
       var form = $( 'form' ).on( 'submit', function( e ) {
           e.preventDefault()
+	  let currentDate = new Date();
+	  let date = currentDate.getDate();
+	  let month = currentDate.getMonth(); //Be careful! January is 0 not 1
+	  let year = currentDate.getFullYear();
+	  let hour = currentDate.getHours();
+	  let minutes = currentDate.getMinutes();
+	  let seconds = currentDate.getSeconds();
+	  let mili = currentDate.getMilliseconds();
+	  var dateString = year + "-" +(month + 1) + "-" + date + " " + hour + ":" + minutes + ":" + seconds + "." + mili;
+	  console.log(dateString);
           let user_input = $( 'input.message' ).val()
-          socket.to(my_room).emit( 'my event', {
+          socket.emit( 'my event', {
               user_name : my_username,
+	      other_user : their_username,
               message : user_input,
-	      room: my_room
+	      room: my_room,
+	      time:dateString
           } )
           $( 'input.message' ).val( '' ).focus()
       } )
   } )
   socket.on( 'my response', function( msg ) {
       console.log( msg )
-      if( typeof msg.user_name !== 'undefined' ) {
+      if( typeof msg.user_name !== 'undefined'){ //&& msg.room == my_room) {
+	  console.log(msg['user_name']);
           $( 'h3' ).remove()
-          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.my_username+'</b> '+msg.message+'</div>' )
+          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
       }
   })
   </script>
-
 {% endblock %}
