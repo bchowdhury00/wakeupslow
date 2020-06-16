@@ -55,8 +55,9 @@
 
                         <div class="row h-75 w-100">
                             <div class="col-4">
-                                <image class="image w-100 h-75 my-2 mx-2" src="{{ listings[listing]['imagesrc'] }}">
-                                </image>
+                              <script> //console.log(window.location.pathname); </script>
+                                <img class="image w-100 my-2 mx-2" src="../../{{listings[listing]['imagesrc']}}" style = "height:100px">
+                                </img>
                             </div>
                             <div class="col-8">
                                 <div class="card-title">
@@ -64,12 +65,10 @@
                                 </div>
                                 <div class="border"></div>
                                 <div class="row" style="font-size:0.7rem">
-                                    <div class="col">
-                                        <p {% if category != 'purchases' %} style="visibility:hidden" {% endif %}>Vendor : {{ listings[listing]['vendor'] }} </p>
-                                        <p {% if category != 'mySold' %} style="visibility:hidden" {% endif %}> Sold to: {{ listings[listing]['soldTo'] }} </p>
-                                        <p> Category : {{ listings[listing]['type'] }} </p>
-                                    </div>
-                                    <div class="col">
+                                    <div class="col text-center my-auto" style="overflow-y:scroll; height:100px">
+                                        <p class="mx-auto" {% if category != 'purchases' %} style="visibility:hidden" {% endif %}>Vendor : {{ listings[listing]['vendor'] }} </p>
+                                        <p class="mx-auto" {% if category != 'mySold' %} style="visibility:hidden" {% endif %}> Sold to: {{ listings[listing]['soldTo'] }} </p>
+                                        <p class="mx-auto inline">Category : {{ listings[listing]['type'] }} </p>
                                         <p> Location : {{ listings[listing]['location'] }} </p>
                                         <p> Price : {{ listings[listing]['price'] }} </p>
                                     </div>
