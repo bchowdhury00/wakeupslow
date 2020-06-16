@@ -18,3 +18,27 @@ Review system <br>
 Virtual transactions <br>
 Inventory page (If you’re a buyer, you can edit, sellers can view) <br>
 Filter Listings (price, sport, type) <br>
+
+## Running Our Project  
+
+Download the repo by cloning it
+```
+git clone https://github.com/aolteanu00/proj4.git
+```
+Create a virtual environment and activate it
+```
+python3 -m venv tehFort
+. tehFort/bin/activate
+```
+
+Enter the folder and download the requirements
+```
+cd wakeupslow
+pip install -r requirements.txt
+cd app
+```
+
+Run the code
+```
+python __init__.py
+```
