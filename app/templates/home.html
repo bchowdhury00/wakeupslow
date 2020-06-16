@@ -150,13 +150,15 @@
           .then(function(returnVals) {
             // you should have return values here when
             // all promises have rsolved
+            //console.log(returnVals);
             realMarkerPositions.length = Object.keys(listings).length;
             //console.log(returnVals);
             //  console.log(realMarkerPositions);
             var mP = 0;
             var resultCounter = 0;
             for (mP; mP < realMarkerPositions.length; mP++) {
-              if (typeof(realMarkerPositions[mP]['lat']) == "undefined") {
+              if (typeof(realMarkerPositions[mP]['lat']) == "undefined" && listings[mP]['location'][0] != "{") {
+                console.log(listings[mP]);
                 realMarkerPositions[mP] = {
                   "lat": returnVals[resultCounter][0],
                   "lng": returnVals[resultCounter][1]
@@ -165,7 +167,7 @@
                 resultCounter++;
               }
             }
-            //  console.log(realMarkerPositions);
+            console.log(realMarkerPositions);
             backupMarkerPositions = realMarkerPositions;
             //console.log(realCurrentLocation);
           //  console.log(listings);
