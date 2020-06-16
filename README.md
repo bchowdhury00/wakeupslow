@@ -12,7 +12,7 @@ Map for local listings <br>
 Create Listings Page <br>
 Direct Messages (if possible, end to end encryption) <br>
 
-#### If we can:
+#### To be continued:
 Verification for vendors (actual stores w exact addresses) <br> 
 Review system <br>
 Virtual transactions <br>
