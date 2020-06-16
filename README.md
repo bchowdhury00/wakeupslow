@@ -23,7 +23,7 @@ Filter Listings (price, sport, type) <br>
 
 Download the repo by cloning it
 ```
-git clone https://github.com/aolteanu00/proj4.git
+git clone https://github.com/bchowdhury00/wakeupslow.git
 ```
 Create a virtual environment and activate it
 ```
