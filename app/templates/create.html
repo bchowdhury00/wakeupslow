@@ -67,7 +67,7 @@
 
     </div>
     <div class="col">
-      <img id="imagefile" src="static/images/index.png" class="img-fluid w-75 h-75 mx-auto my-5 rounded"> </img>
+      <img id="imagefile" src="static/images/index.png" class="img-fluid w-75 mx-auto my-5 rounded" style="height:300px"> </img>
     </div>
   </div>
 
@@ -97,6 +97,9 @@
     console.log(position);
 
     function validateAddress(address) {
+      if (position == "None"){
+        return false;
+      }
       if (address[0] == "{"){
         return true;
       }

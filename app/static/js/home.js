@@ -17,7 +17,7 @@ function updatedListingsDisplay() {
       }
     }
   }
-  console.log(sortedList);
+  //console.log(sortedList);
   var realList = document.getElementById('listingList')
   realList.innerHTML = '';
   for (listCounter = 0; listCounter < sortedList.length; listCounter++) {
@@ -154,7 +154,7 @@ function countOccurences(a, obj) {
 
 function findLatLang(address, i, geocoder) {
   return new Promise(function(resolve, reject) {
-    geocoder.geocode({
+    setTimeout(geocoder.geocode({
       'address': address
     }, function(results, status) {
       //  console.log(results);
@@ -163,14 +163,20 @@ function findLatLang(address, i, geocoder) {
         //console.log(results);
         resolve([results[0].geometry.location.lat(), results[0].geometry.location.lng()]);
       } else {
+        console.log(status);
         realMarkerPositions[i] = {
           lat: 0,
           lng: 0
         };
         //console.log("ran");
+        if (status == 'OVER_QUERY_LIMIT'){
+          console.log("did not buss " + address);
+        //  setTimeout(resolve(findLatLang(address, i, geocoder)),500);
+        resolve('ur mom');
+        }
         reject(new Error('Couldnt\'t find the location ' + address));
       }
-    })
+    }), 1000 * i);
   })
 }
 

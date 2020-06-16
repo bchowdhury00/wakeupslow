@@ -37,7 +37,7 @@ def hello_world():
 def home():
     if len(request.args) > 0:
         if request.args['mType'] == '0':
-            return render_template('home.html', alert="?")
+            return render_template('home.html', alert="?", key=key)
         elif request.args['mType'] == '1':
             return render_template('home.html', listings=getListings(session['username']), success="Logged In", key=key)
         elif request.args['mType'] == '2':
@@ -47,6 +47,16 @@ def home():
     if 'username' not in session:
         return redirect('/')
     return render_template('home.html', listings=getListings(session['username']), key = key)
+
+@app.route('/home/<category>')
+def li(category):
+    listings = getListings('c')
+    filtered = {}
+    for idx in listings:
+        if listings[idx]['type'] == category:
+            filtered[len(filtered)] = listings[idx]
+    print(category)
+    return render_template('home.html', listings=filtered, cat=str(category), key=key)
 
 @app.route('/listings/<listingID>', methods=['GET','POST'])
 def viewListing(listingID):
@@ -186,6 +196,9 @@ def createListing():
             image = request.files["image"]
             ext = image.filename.split('.')[-1]
             print(ext)
+            if filename == "":
+                filename = "index"
+                ext = "png"
             filename += ("." + ext)
             image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
         print(filename)

@@ -30,7 +30,7 @@
             </div>
             {% if 'username' in session %}
                 {% if listing['vendor'] != session['username'] %}
-                    <button id="message" class="btn btn-outline-success my-3">Message Vendor</button>
+                    <a id="message" class="btn btn-outline-success my-3" href="{{url_for('message',otheruser=listing['vendor'])}}">Message Vendor</a>
                 {% elif 'purchasedBy' not in listing %}
                     <button id='sell' class="btn btn-outline-danger my-3">Mark as sold</button>
                     <form id="sellForm" method="POST" style="display:none">
