@@ -163,11 +163,15 @@ function findLatLang(address, i, geocoder) {
         //console.log(results);
         resolve([results[0].geometry.location.lat(), results[0].geometry.location.lng()]);
       } else {
+        console.log(status);
         realMarkerPositions[i] = {
           lat: 0,
           lng: 0
         };
         //console.log("ran");
+        if (status == 'OVER_QUERY_LIMIT'){
+          resolve('try again');
+        }
         reject(new Error('Couldnt\'t find the location ' + address));
       }
     })
