@@ -3,112 +3,117 @@
 
 
 {% block body %}
-<div class="card-header">
-  <ul class="nav nav-pills card-header-pills mx-auto">
-    <li class="nav-item">
-      <a class="nav-link" href="#">Football</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Lacrosse</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Hockey</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Baseball</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Apparel</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Skiing</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Snowboarding</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Softball</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Soccer</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Footwear</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Tennis</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Hiking</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Fishing</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Other</a>
-    </li>
-  </ul>
-</div>
-<style>
-  /* Always set the map height explicitly to define the size of the div
-     * element that contains the map. */
-  #map {
-    height: 600px;
-  }
-</style>
-
-<div class="row mb-3">
-  <div class="input-group mt-3 mx-5">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Address or Area: </span>
+    <div class="card-header">
+        <ul class="nav nav-pills card-header-pills text-center mx-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Football" id="Football">Football</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Lacrosse" id="Lacrosse">Lacrosse</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Hockey" id="Hockey">Hockey</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Baseball" id="Baseball">Baseball</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Apparel" id="Apparel">Apparel</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Skiing" id="Skiing">Skiing</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Snowboarding" id="Snowboarding">Snowboarding</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Softball" id="Softball">Softball</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Soccer" id="Soccer">Soccer</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Footwear" id="Footwear">Footwear</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Tennis" id="Tennis">Tennis</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Hiking" id="Hiking">Hiking</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Football" id="Fishing">Fishing</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/Other" id="Other">Other</a>
+            </li>
+        </ul>
     </div>
-    <input name="location" id="pac-input" type="text" class="form-control" placeholder="If left empty, will assume current location" aria-label="Username" aria-describedby="basic-addon1">
-  </div>
-</div>
-<br>
-<div class="border"></div>
-<div class="row">
-  <div class="col-4 mt-3 rounded" style="overflow-y:scroll; height:600px">
-    <div id="listingList" class="list">
-      {% for listing in listings %}
-      <div class="list-item" id="{{listings[listing]['listingID']}}" onmouseover="hover('{{listings[listing]['listingID']}}')">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+           * element that contains the map. */
+        #map {
+            height: 600px;
+        }
+    </style>
 
-
-
-
-
-
-
-        <div class="card mx-2 my-3" style="height:200px;">
-          <div class="row">
-            <div class="col" style="overflow-y:scroll; height:130px">
-              <div class="media-body order-2 order-lg-1">
-                <h5 class="mt-1 font-weight-bold mb-2">{{listings[listing]['title']}}</h5>
-                <p class="font-italic text-muted mb-0 small">Vendor : {{listings[listing]['vendor']}}</p>
-                <p class="font-italic text-muted mb-0 small">Category : {{listings[listing]['type']}}</p>
-                <p class="font-italic text-muted mb-0 small">Location : {{listings[listing]['location']}}</p>
-                <div class="d-flex align-items-center justify-content-between mt-1">
-                  <h6 class="font-weight-bold my-2 mx-auto" style="font-size:.9rem">Price : {{listings[listing]['price']}}</h6>
-                </div>
-              </div>
+    <div class="row mb-3">
+        <div class="input-group mt-3 mx-5">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Address or Area: </span>
             </div>
-            <div class="col">
-              <img src="{{listings[listing]['imagesrc']}}" alt="Generic placeholder image" class="mx-auto mt-4 mb-2 rounded w-75" style="height:110px">
-            </div>
-          </div>
-          <div class="border"></div>
-          <div class="row  my-2">
-	       <a type="submit" class="btn btn-outline-success my-1 mx-auto" href="{{url_for("message",otheruser=listings[listing]['vendor'])}}">Message</a>
-	       <a class="btn btn-outline-primary mx-auto my-1" href="/listings/{{ listings[listing]['listingID'] }}"> View Listing</a>
-          </div>
+            <input name="location" id="pac-input" type="text" class="form-control"
+                   placeholder="If left empty, will assume current location" aria-label="Username"
+                   aria-describedby="basic-addon1">
         </div>
-      </div>
-      {% endfor %}
     </div>
-  </div>
+    <br>
+    <div class="border"></div>
+    <div class="row">
+        <div class="col-4 mt-3 rounded" style="overflow-y:scroll; height:600px">
+            <div id="listingList" class="list">
+                {% for listing in listings %}
+                    <div class="list-item" id="{{ listings[listing]['listingID'] }}"
+                         onmouseover="hover('{{ listings[listing]['listingID'] }}')">
 
 
-  <div class="col-7 my-3 pull-right rounded mx-auto" id="map"></div>
+                        <div class="card mx-2 my-3" style="height:200px;">
+                            <div class="row">
+                                <div class="col" style="overflow-y:scroll; height:130px">
+                                    <div class="media-body order-2 order-lg-1">
+                                        <h5 class="mt-1 font-weight-bold mb-2">{{ listings[listing]['title'] }}</h5>
+                                        <p class="font-italic text-muted mb-0 small">Vendor
+                                            : {{ listings[listing]['vendor'] }}</p>
+                                        <p class="font-italic text-muted mb-0 small">Category
+                                            : {{ listings[listing]['type'] }}</p>
+                                        <p class="font-italic text-muted mb-0 small">Location
+                                            : {{ listings[listing]['location'] }}</p>
+                                        <div class="d-flex align-items-center justify-content-between mt-1">
+                                            <h6 class="font-weight-bold my-2 mx-auto" style="font-size:.9rem">Price
+                                                : {{ listings[listing]['price'] }}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <img src="{{ listings[listing]['imagesrc'] }}" alt="Generic placeholder image"
+                                         class="mx-auto mt-4 mb-2 rounded w-75" style="height:110px">
+                                </div>
+                            </div>
+                            <div class="border"></div>
+                            <div class="row  my-2">
+                                <a type="submit" class="btn btn-outline-success my-1 mx-auto"
+                                   href="{{ url_for("message",otheruser=listings[listing]['vendor']) }}">Message</a>
+                                <a class="btn btn-outline-primary mx-auto my-1"
+                                   href="/listings/{{ listings[listing]['listingID'] }}"> View Listing</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <div class="col-7 my-3 pull-right rounded mx-auto" id="map"></div>
 
 
 </div>
@@ -123,29 +128,108 @@
   var promised = [];
   var map, infoWindow, geocoder;
   var realMarkerPositions;
+    </div>
+    <script src="../static/js/home.js"></script>
+    {% if cat is defined %}
+        <script>
+            var barItem = document.getElementById('{{ cat }}');
+            barItem.className = 'nav-link active';
+            barItem.href = '/home'
+        </script>
+    {% endif %}
+    <script>
+        var listings = {{listings | safe}};
+        console.log(listings);
+        // Note: This example requires that you consent to location sharing when
+        // prompted by your browser. If you see the error "The Geolocation service
+        // failed.", it means you probably did not give permission for the browser to
+        // locate you.
+        var promised = [];
+        var map, infoWindow, geocoder;
+        var realMarkerPositions;
 
   function initAutocomplete() {
     var realCurrentLocation;
     geocoder = geocoder = new google.maps.Geocoder();
 
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {
-        lat: -8.783195,
-        lng: 34.508522
-      },
-      zoom: 12
-    });
-    infoWindow = new google.maps.InfoWindow;
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: -8.783195,
+                    lng: 34.508522
+                },
+                zoom: 12
+            });
+            infoWindow = new google.maps.InfoWindow;
 
 
-    realCurrentLocation = findCurrentLocationGoog();
+            realCurrentLocation = findCurrentLocationGoog();
 
-    realCurrentLocation.then(function(result) {
-      //console.log(result);
-      if (result['lat'] != 0) {
-        realCurrentLocation = result;
-        realMarkerPositions = getMarkerPositions(geocoder);
+            realCurrentLocation.then(function (result) {
+                //console.log(result);
+                if (result['lat'] != 0) {
+                    realCurrentLocation = result;
+                    realMarkerPositions = getMarkerPositions(geocoder);
 
+                    Promise.all(promised)
+                        .then(function (returnVals) {
+                            // you should have return values here when
+                            // all promises have rsolved
+                            realMarkerPositions.length = Object.keys(listings).length;
+                            //console.log(returnVals);
+                            //  console.log(realMarkerPositions);
+                            var mP = 0;
+                            var resultCounter = 0;
+                            for (mP; mP < realMarkerPositions.length; mP++) {
+                                if (typeof (realMarkerPositions[mP]['lat']) == "undefined") {
+                                    realMarkerPositions[mP] = {
+                                        "lat": returnVals[resultCounter][0],
+                                        "lng": returnVals[resultCounter][1]
+                                    };
+                                    // console.log('ran');
+                                    resultCounter++;
+                                }
+                            }
+                            //  console.log(realMarkerPositions);
+                            backupMarkerPositions = realMarkerPositions;
+                            //console.log(realCurrentLocation);
+                            //  console.log(listings);
+                            var pertinentPromise = sortDistances(realMarkerPositions, realCurrentLocation);
+                            pertinentPromise.then(function (newReturnVals) {
+                                listings = newReturnVals[0];
+                                realMarkerPositions = newReturnVals[1];
+                                //console.log(newReturnVals);
+                                updatedListingsDisplay();
+                                setUpSearchBox(realMarkerPositions);
+                            });
+                        });
+                } else {
+                    realMarkerPositions = getMarkerPositions(geocoder);
+                    Promise.all(promised)
+                        .then(function (returnVals) {
+                            // you should have return values here when
+                            // all promises have rsolved
+                            realMarkerPositions.length = Object.keys(listings).length;
+                            console.log(returnVals);
+                            //  console.log(realMarkerPositions);
+                            var mP = 0;
+                            var resultCounter = 0;
+                            for (mP; mP < realMarkerPositions.length; mP++) {
+                                if (typeof (realMarkerPositions[mP]['lat']) == "undefined") {
+                                    realMarkerPositions[mP] = {
+                                        "lat": returnVals[resultCounter][0],
+                                        "lng": returnVals[resultCounter][1]
+                                    };
+                                    // console.log('ran');
+                                    resultCounter++;
+                                }
+                            }
+                            //  console.log(realMarkerPositions);
+                            backupMarkerPositions = realMarkerPositions;
+                            setUpSearchBox(realMarkerPositions);
+                        });
+                }
+            });
+        }
         Promise.all(promised)
           .then(function(returnVals) {
             // you should have return values here when
@@ -209,9 +293,10 @@
     });
   }
 
-  //console.log(realMarkerPositions);
-</script>
+        //console.log(realMarkerPositions);
+    </script>
 
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{key}}&libraries=places&callback=initAutocomplete" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ key }}&libraries=places&callback=initAutocomplete" async
+            defer></script>
 {% endblock %}
