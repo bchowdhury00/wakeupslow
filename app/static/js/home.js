@@ -154,7 +154,7 @@ function countOccurences(a, obj) {
 
 function findLatLang(address, i, geocoder) {
   return new Promise(function(resolve, reject) {
-    setTimeout(geocoder.geocode({
+    geocoder.geocode({
       'address': address
     }, function(results, status) {
       //  console.log(results);
@@ -176,8 +176,8 @@ function findLatLang(address, i, geocoder) {
         }
         reject(new Error('Couldnt\'t find the location ' + address));
       }
-    }), 1000 * i);
-  })
+    });
+  });
 }
 
 

@@ -31,7 +31,7 @@ var promiseMade;
 function confirmLocation() {
   var input = document.getElementById("pac-input").value;
   if (input == "") {
-    input = "{latitude:" + currentPosition['latitude'] + ", " + "longitude: " + currentPosition['longitude'] + "}";
+    input = "{lat:" + currentPosition['latitude'] + ", " + "lng: " + currentPosition['longitude'] + "}";
   }
   if (input.length < 2){
     window.location = "/profile?mType=3";
@@ -41,7 +41,9 @@ function confirmLocation() {
   if (promiseMade) {
     validation.then(function(result) {
       console.log(result);
-      if (result){
+
+      if (result != false){
+        input = "{lat:" + result[0] + ", lng:" + result[1] + "}";
         fetch("/profile", {
             method: "POST",
             headers: {
@@ -58,6 +60,7 @@ function confirmLocation() {
       }
     });
   } else {
+    console.log(input)
     if (validation){
       fetch("/profile", {
           method: "POST",
@@ -90,26 +93,8 @@ function validateAddress(address) {
       if (error != "OK") {
         return resolve(false);
       }
-      console.log(results);
-      return resolve(true);
+      //console.log(results);
+      return resolve([results[0].geometry.location.lat(), results[0].geometry.location.lng()]);
     });
   });
 }
-
-// (function(w, google) {
-//
-// var validLoc = validateAddress(position);
-// if (promiseMade){
-//   validLoc.then(function(result){
-//     console.log(result);
-//     if (result == false){
-//       window.location = "/profile?mType=2";
-//     }
-// });
-// } else {
-// console.log(validLoc);
-// if (!validLoc){
-//   window.location = "/profile?mType=2";
-// }
-// }
-// })(window, google);
