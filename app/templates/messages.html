@@ -22,6 +22,7 @@
           </div>
         </div>
         <div class="inbox_chat">
+    {% if people %}
 	  {% for person in people %}
 	  {% if person == other %}
 	  <a href={{url_for("message",otheruser=person)}}>
@@ -49,6 +50,7 @@
 	  </a>
 	  {% endif %}
 	  {% endfor %}
+    {% endif %}
         </div>
       </div>
       <div class="mesgs">
@@ -60,7 +62,7 @@
           </div>
         </div>
       </div>
-    </div>    
+    </div>
   </div>
 </div>
 
@@ -94,7 +96,7 @@
           e.preventDefault()
 	  let currentDate = new Date();
 	  let date = currentDate.getDate();
-	  let month = currentDate.getMonth(); 
+	  let month = currentDate.getMonth();
 	  let year = currentDate.getFullYear();
 	  let hour = currentDate.getHours();
 	  let minutes = currentDate.getMinutes();
@@ -115,10 +117,10 @@
           if (e.keyCode === 13) {
 	      $( '#sendmessage' ).click()
 	  }
-      })   
+      })
   })
   socket.on( 'my response', function( msg ) {
-      if( typeof msg.user_name !== 'undefined'){ 
+      if( typeof msg.user_name !== 'undefined'){
 	  console.log(msg['user_name']);
 	  if (msg['user_name'] == my_username){
 	      $( 'div.msg_history' ).append( '<div class="outgoing_msg"><div class="sent_msg"><p>' + msg.message + '</p><span class="time_date">' + msg.time + '</span></div></div>');
@@ -126,7 +128,7 @@
 	  else {
 	      $( 'div.msg_history' ).append( '<div class="incoming_msg"><div class="received_msg"><div class="received_withd_msg"><p>' + msg.message  + '</p><span class="time_date"> ' + msg.time +'</span></div></div></div>');
 	  }
-	  $("div.msg_history").scrollTop($("div.msg_history")[0].scrollHeight);	  
+	  $("div.msg_history").scrollTop($("div.msg_history")[0].scrollHeight);
       }
   })
   </script>

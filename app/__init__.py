@@ -212,13 +212,18 @@ def viewMyMessages():
     if 'username' not in session:
         return redirect(url_for('login', mType=2))
     arr = getOpenConvos(session['username'])
-    return redirect(url_for("message",otheruser=arr[0]))
+    if arr != []:
+        return redirect(url_for("message",otheruser=arr[0]))
+    else:
+        return redirect(url_for("message",otheruser='None'))
 
 
 @app.route('/messages/<otheruser>',methods=['GET', 'POST'])
 def message(otheruser):
     if 'username' not in session:
         return redirect(url_for('login', mType=2))
+    if otheruser == 'None':
+        return render_template('messages.html', myusername=session['username'])
     user = session['username']
     user2= getUserInfo(otheruser)[1]
     history = json.dumps(getConvo(user,user2))
