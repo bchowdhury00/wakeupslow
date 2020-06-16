@@ -97,10 +97,10 @@ def getListings(user):
         entry['title'] = arr[2]
         entry['vendor'] = getUserInfo(arr[1])[1]
         entry['imagesrc'] = 'static/images/' + arr[6]
-        if (getUserInfo(arr[1])[4] == None):
+        if (getUserInfo(arr[1])[3] == None):
             entry['location'] = "None"
         else:
-            entry['location'] = getUserInfo(arr[1])[4]
+            entry['location'] = getUserInfo(arr[1])[3]
         entry['price'] = arr[5]
         entry['type'] = arr[3]
         result[i] = entry
