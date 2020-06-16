@@ -116,6 +116,18 @@
         <div class="col-7 my-3 pull-right rounded mx-auto" id="map"></div>
 
 
+</div>
+<script src="../static/js/home.js"></script>
+<script>
+  var listings = {{listings | safe}};
+  //console.log(listings);
+  // Note: This example requires that you consent to location sharing when
+  // prompted by your browser. If you see the error "The Geolocation service
+  // failed.", it means you probably did not give permission for the browser to
+  // locate you.
+  var promised = [];
+  var map, infoWindow, geocoder;
+  var realMarkerPositions;
     </div>
     <script src="../static/js/home.js"></script>
     {% if cat is defined %}
@@ -136,9 +148,9 @@
         var map, infoWindow, geocoder;
         var realMarkerPositions;
 
-        function initAutocomplete() {
-            var realCurrentLocation;
-            geocoder = geocoder = new google.maps.Geocoder();
+  function initAutocomplete() {
+    var realCurrentLocation;
+    geocoder = geocoder = new google.maps.Geocoder();
 
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {
@@ -218,6 +230,66 @@
                 }
             });
         }
+        Promise.all(promised)
+          .then(function(returnVals) {
+            // you should have return values here when
+            // all promises have rsolved
+            realMarkerPositions.length = Object.keys(listings).length;
+            //console.log(returnVals);
+            //  console.log(realMarkerPositions);
+            var mP = 0;
+            var resultCounter = 0;
+            for (mP; mP < realMarkerPositions.length; mP++) {
+              if (typeof(realMarkerPositions[mP]['lat']) == "undefined") {
+                realMarkerPositions[mP] = {
+                  "lat": returnVals[resultCounter][0],
+                  "lng": returnVals[resultCounter][1]
+                };
+                // console.log('ran');
+                resultCounter++;
+              }
+            }
+            //  console.log(realMarkerPositions);
+            backupMarkerPositions = realMarkerPositions;
+            //console.log(realCurrentLocation);
+          //  console.log(listings);
+            var pertinentPromise = sortDistances(realMarkerPositions, realCurrentLocation);
+            pertinentPromise.then(function(newReturnVals) {
+              listings = newReturnVals[0];
+              realMarkerPositions = newReturnVals[1];
+              //console.log(newReturnVals);
+              updatedListingsDisplay();
+              setUpSearchBox(realMarkerPositions);
+            });
+          });
+      } else {
+        realMarkerPositions = getMarkerPositions(geocoder);
+        Promise.all(promised)
+          .then(function(returnVals) {
+            // you should have return values here when
+            // all promises have rsolved
+            realMarkerPositions.length = Object.keys(listings).length;
+            //console.log(returnVals);
+            //  console.log(realMarkerPositions);
+            var mP = 0;
+            var resultCounter = 0;
+            for (mP; mP < realMarkerPositions.length; mP++) {
+              if (typeof(realMarkerPositions[mP]['lat']) == "undefined") {
+                realMarkerPositions[mP] = {
+                  "lat": returnVals[resultCounter][0],
+                  "lng": returnVals[resultCounter][1]
+                };
+                // console.log('ran');
+                resultCounter++;
+              }
+            }
+            //  console.log(realMarkerPositions);
+            backupMarkerPositions = realMarkerPositions;
+            setUpSearchBox(realMarkerPositions);
+          });
+      }
+    });
+  }
 
         //console.log(realMarkerPositions);
     </script>
