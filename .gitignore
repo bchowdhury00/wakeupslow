@@ -123,6 +123,9 @@ _*
 Thumbs.db
 ehthumbs.db
 
+# API KEYS #
+key.txt
+
 # Filenames with special characters
 **/*[\\/\:;*?!'"<>|$º•¶§∞¢£]*
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

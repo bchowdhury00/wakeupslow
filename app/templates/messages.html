@@ -1,12 +1,68 @@
 {% extends "base.html" %}
-{% block body %}
-<h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
-<div id="mydiv" class="message_holder" style="overflow-y:scroll; height:300px;"></div>
+{% block behead %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% endblock %}
 
-<form action="" method="POST">
-  <input type="text" class="message" placeholder="Messages"/>
-  <input type="submit"/>
-</form>
+{% block head%}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
+<link href="../static/css/message.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <h3 class=" text-center">Messaging</h3>
+  <div class="messaging">
+    <div class="inbox_msg">
+      <div class="inbox_people">
+        <div class="headind_srch">
+          <div class="recent_heading">
+	    <h4>Recent</h4>
+          </div>
+        </div>
+        <div class="inbox_chat">
+	  {% for person in people %}
+	  {% if person == other %}
+	  <a href={{url_for("message",otheruser=person)}}>
+	    <div class="chat_list active_chat">
+	      <div class="chat_people">
+		<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+		<div class="chat_ib">
+                  <h5>{{person}} <span class="chat_date">date</span></h5>
+                  <p>Insert last message</p>
+		</div>
+	      </div>
+            </div>
+	  </a>
+	  {% else %}
+	  <a href={{url_for("message",otheruser=person)}}>
+	    <div class="chat_list">
+	      <div class="chat_people">
+		<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+		<div class="chat_ib">
+                  <h5>{{person}} <span class="chat_date">date</span></h5>
+                  <p>Insert last message</p>
+		</div>
+	      </div>
+            </div>
+	  </a>
+	  {% endif %}
+	  {% endfor %}
+        </div>
+      </div>
+      <div class="mesgs">
+        <div class="msg_history"></div>
+        <div class="type_msg">
+          <div class="input_msg_write">
+	    <input type="text" class="write_msg" placeholder="Type a message">
+	    <button id="sendmessage" class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+</div>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -19,16 +75,22 @@
   let history = JSON.parse({{ hist|safe }});
   for (message in history.messages){
       el = history.messages[message];
-      $( 'div.message_holder' ).append( '<div><b style="color: #000">'+el.fromUser+'</b> '+el.content+'</div>' )
+      if (el.fromUser == my_username){
+	  $( 'div.msg_history' ).append( '<div class="outgoing_msg"><div class="sent_msg"><p>' + el.content + '</p><span class="time_date">' + el.timestamp + '</span></div></div>');
+      }
+      else {
+	  $( 'div.msg_history' ).append( '<div class="incoming_msg"><div class="received_msg"><div class="received_withd_msg"><p>' + el.content  + '</p><span class="time_date"> ' + el.timestamp +'</span></div></div></div>');
+
+      }
   }
-  $("#mydiv").scrollTop($("#mydiv")[0].scrollHeight);
-  console.log(history.messages);
+  $("div.msg_history").scrollTop($("div.msg_history")[0].scrollHeight);
+  //console.log(history.messages);
   socket.on( 'connect', function() {
       socket.emit('join',{
 	  username: my_username,
 	  room: my_room
       })
-      var form = $( 'form' ).on( 'submit', function( e ) {
+      $( '#sendmessage' ).on( 'click', function( e ) {
           e.preventDefault()
 	  let currentDate = new Date();
 	  let date = currentDate.getDate();
@@ -39,7 +101,7 @@
 	  let seconds = currentDate.getSeconds();
 	  let mili = currentDate.getMilliseconds();
 	  var dateString = year + "-" +(month + 1) + "-" + date + " " + hour + ":" + minutes + ":" + seconds + "." + mili;
-          let user_input = $( 'input.message' ).val()
+	  let user_input = $( 'input.write_msg' ).val()
           socket.emit( 'my event', {
               user_name : my_username,
 	      other_user : their_username,
@@ -47,15 +109,24 @@
 	      room: my_room,
 	      time:dateString
           } )
-          $( 'input.message' ).val( '' ).focus()
+          $( 'input.write_msg' ).val( '' ).focus()
       } )
-  } )
+      $( 'input.write_msg' ).keypress(function( e ){
+          if (e.keyCode === 13) {
+	      $( '#sendmessage' ).click()
+	  }
+      })   
+  })
   socket.on( 'my response', function( msg ) {
       if( typeof msg.user_name !== 'undefined'){ 
 	  console.log(msg['user_name']);
-          $( 'h3' ).remove()
-          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
-	  $("#mydiv").scrollTop($("#mydiv")[0].scrollHeight);
+	  if (msg['user_name'] == my_username){
+	      $( 'div.msg_history' ).append( '<div class="outgoing_msg"><div class="sent_msg"><p>' + msg.message + '</p><span class="time_date">' + msg.time + '</span></div></div>');
+	  }
+	  else {
+	      $( 'div.msg_history' ).append( '<div class="incoming_msg"><div class="received_msg"><div class="received_withd_msg"><p>' + msg.message  + '</p><span class="time_date"> ' + msg.time +'</span></div></div></div>');
+	  }
+	  $("div.msg_history").scrollTop($("div.msg_history")[0].scrollHeight);	  
       }
   })
   </script>

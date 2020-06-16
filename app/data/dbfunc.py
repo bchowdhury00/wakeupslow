@@ -4,7 +4,7 @@ import random
 import string
 
 
-DB_FILE = "app/data/database.db"
+DB_FILE = "data/database.db"
 
 def getNextID(type):
     db = sqlite3.connect(DB_FILE)

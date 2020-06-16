@@ -1,74 +1,77 @@
 <!doctype html>
 <html lang="en">
+  {% block behead %}
+  {% endblock %}
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <a class="navbar-brand" href="/">Pull Up Trading</a>
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        {% if 'username' in session %}
-        <li class="nav-item">
-          <a class="nav-link" href="/home">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/createListing">Create a Listing</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/allmessages">View messages</a>
-        </li>
-        {% endif %}
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        {% if 'username' not in session %}
-        <a class="btn btn-outline-success my-2 my-sm-0 text-success mx-2" href="/login">Login</a>
-        <a class="btn btn-outline-danger my-2 my-sm-0 text-danger mx-2" href="/register">Sign Up</a>
-        {% else %}
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-primary my-2 my-sm-0 mx-2" type="submit">Search</button>
-        <a class="btn btn-outline-success my-2 my-sm-0 mx-2" href="/profile">My Account</a>
-        <a class="btn btn-outline-danger my-2 my-sm-0 mx-2" href="/logOut">Log Out</a>
-        {% endif %}
-      </form>
-    </div>
-  </nav>
-</head>
-
-
-<body>
-  <div class="card text-center h-100">
-
-    {% if alert is defined %}
-    <div class="alert alert-danger" role="alert">
-      {{ alert }}
-    </div>
-    {% elif success is defined %}
-    <div class="alert alert-success" role="alert">
-      {{ success }}
-    </div>
-    {% endif %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+	<span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+	<a class="navbar-brand" href="/">Pull Up Trading</a>
+	<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          {% if 'username' in session %}
+          <li class="nav-item">
+            <a class="nav-link" href="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/createListing">Create a Listing</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/allmessages">View messages</a>
+          </li>
+          {% endif %}
+	</ul>
+	<form class="form-inline my-2 my-lg-0">
+          {% if 'username' not in session %}
+          <a class="btn btn-outline-success my-2 my-sm-0 text-success mx-2" href="/login">Login</a>
+          <a class="btn btn-outline-danger my-2 my-sm-0 text-danger mx-2" href="/register">Sign Up</a>
+          {% else %}
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-primary my-2 my-sm-0 mx-2" type="submit">Search</button>
+          <a class="btn btn-outline-success my-2 my-sm-0 mx-2" href="/profile">My Account</a>
+          <a class="btn btn-outline-danger my-2 my-sm-0 mx-2" href="/logOut">Log Out</a>
+          {% endif %}
+	</form>
+      </div>
+    </nav>
+    {% block head %}
+    {% endblock %}
+  </head>
 
 
+  <body>
+    <div class="card text-center h-100">
+
+      {% if alert is defined %}
+      <div class="alert alert-danger" role="alert">
+	{{ alert }}
+      </div>
+      {% elif success is defined %}
+      <div class="alert alert-success" role="alert">
+	{{ success }}
+      </div>
+      {% endif %}
 
 
 
-    <div class="card-body center-block h-100">
-      <div class="card text-center w-100 h-100 mx-auto">
-        {% block body %}
-        {% endblock %}
+
+
+      <div class="card-body center-block h-100">
+	<div class="card text-center w-100 h-100 mx-auto">
+          {% block body %}
+          {% endblock %}
+	</div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 
 
 </html>

@@ -199,8 +199,7 @@ def viewMyMessages():
     if 'username' not in session:
         return redirect(url_for('login', mType=2))
     arr = getOpenConvos(session['username'])
-    print(arr)
-    return render_template("mymessages.html",arr=arr)
+    return redirect(url_for("message",otheruser=arr[0]))
 
 
 @app.route('/messages/<otheruser>',methods=['GET', 'POST'])
@@ -212,7 +211,8 @@ def message(otheruser):
     history = json.dumps(getConvo(user,user2))
     print(history)
     chatroom = json.dumps(getChatRoom(user,otheruser))
-    return render_template("messages.html",room=chatroom,myusername=json.dumps(user),username2=json.dumps(user2),hist=history)
+    arr = getOpenConvos(session['username'])
+    return render_template("messages.html",people=arr,other=user2,room=chatroom,myusername=json.dumps(user),username2=json.dumps(user2),hist=history)
 
 def messageReceived(methods=['GET', 'POST']):
     print('message was received!!!')
