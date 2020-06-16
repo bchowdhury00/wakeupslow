@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os, platform, json
 from flask_socketio import SocketIO,join_room, leave_room
-from data.dbfunc import *
+from app.data.dbfunc import *
 
 key = ""
 UPLOAD_FOLDER = ""
@@ -47,6 +47,16 @@ def home():
     if 'username' not in session:
         return redirect('/')
     return render_template('home.html', listings=getListings(session['username']), key = key)
+
+@app.route('/home/<category>')
+def li(category):
+    listings = getListings('c')
+    filtered = {}
+    for idx in listings:
+        if listings[idx]['type'] == category:
+            filtered[len(filtered)] = listings[idx]
+    print(category)
+    return render_template('home.html', listings=filtered, cat=str(category), key=key)
 
 @app.route('/listings/<listingID>', methods=['GET','POST'])
 def viewListing(listingID):
