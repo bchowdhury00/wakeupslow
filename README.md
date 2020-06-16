@@ -12,9 +12,33 @@ Map for local listings <br>
 Create Listings Page <br>
 Direct Messages (if possible, end to end encryption) <br>
 
-#### If we can:
+#### To be continued:
 Verification for vendors (actual stores w exact addresses) <br> 
 Review system <br>
 Virtual transactions <br>
 Inventory page (If you’re a buyer, you can edit, sellers can view) <br>
 Filter Listings (price, sport, type) <br>
+
+## Running Our Project  
+
+Download the repo by cloning it
+```
+git clone https://github.com/bchowdhury00/wakeupslow.git
+```
+Create a virtual environment and activate it
+```
+python3 -m venv tehFort
+. tehFort/bin/activate
+```
+
+Enter the folder and download the requirements
+```
+cd wakeupslow
+pip install -r requirements.txt
+cd app
+```
+
+Run the code
+```
+python __init__.py
+```
