@@ -118,23 +118,11 @@
 
 </div>
 <script src="../static/js/home.js"></script>
-<script>
-  var listings = {{listings | safe}};
-  //console.log(listings);
-  // Note: This example requires that you consent to location sharing when
-  // prompted by your browser. If you see the error "The Geolocation service
-  // failed.", it means you probably did not give permission for the browser to
-  // locate you.
-  var promised = [];
-  var map, infoWindow, geocoder;
-  var realMarkerPositions;
-    </div>
-    <script src="../static/js/home.js"></script>
     {% if cat is defined %}
         <script>
             var barItem = document.getElementById('{{ cat }}');
             barItem.className = 'nav-link active';
-            barItem.href = '/home'
+            barItem.href = '/home';
         </script>
     {% endif %}
     <script>
@@ -180,7 +168,7 @@
                             var mP = 0;
                             var resultCounter = 0;
                             for (mP; mP < realMarkerPositions.length; mP++) {
-                                if (typeof (realMarkerPositions[mP]['lat']) == "undefined") {
+                                if (typeof (realMarkerPositions[mP]['lat']) == "undefined" && listings[mP]['location'][0] != "{") {
                                     realMarkerPositions[mP] = {
                                         "lat": returnVals[resultCounter][0],
                                         "lng": returnVals[resultCounter][1]

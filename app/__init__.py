@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect, session, render_template, url_for, flash
 import os, platform, json
 from flask_socketio import SocketIO,join_room, leave_room
-from app.data.dbfunc import *
+from data.dbfunc import *
 
 key = ""
 UPLOAD_FOLDER = ""
